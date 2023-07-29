@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.23)
 set(PROJECT_NAME TestProject)
 project(${PROJECT_NAME})
 
@@ -14,10 +14,14 @@ FetchContent_MakeAvailable(SDL2)
 set(
         SourceFiles
         src/main.cpp
+        src/Grid.cpp
+        src/Blocks.cpp
 )
 
 set(
         HeaderFiles
+        src/Grid.hpp
+        src/Blocks.hpp
 )
 
 add_executable(${PROJECT_NAME} ${SourceFiles} ${HeaderFiles})
