@@ -4,14 +4,18 @@ set(
         SourceFiles
         Grid.cpp
         Blocks.cpp
+        Renderer.cpp
+        Solver.cpp
 )
 
 set(
         HeaderFiles
         Grid.hpp
         Blocks.hpp
-        Solver.cpp
         Solver.hpp
+        Renderer.hpp
+        Colors.hpp
+        Defines.hpp
 )
 
 add_library(Code)
