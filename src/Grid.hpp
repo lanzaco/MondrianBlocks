@@ -13,6 +13,7 @@ public:
     void removeBlock();
     void init();
     void setGridSize(int gridSize);
+    std::vector<Blocks*> getGrid();
 
 private:
     static int m_gridSize;

@@ -1,5 +1,7 @@
 #include "Grid.hpp"
 
+int Grid::m_gridSize = 0;
+
 Grid::Grid()
 {
 }
@@ -21,4 +23,8 @@ void Grid::removeBlock()
 }
 void Grid::init()
 {
+}
+
+std::vector<Blocks *> Grid::getGrid() {
+    return m_grid;
 }
