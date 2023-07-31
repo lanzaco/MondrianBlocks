@@ -5,9 +5,11 @@
 SDL_Window* Renderer::m_window{nullptr};
 SDL_Renderer* Renderer::m_renderer{nullptr};
 
-void Renderer::init() {
+void Renderer::init()
+{
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    {
         throw std::invalid_argument("Error");
     }
 
@@ -36,6 +38,7 @@ void Renderer::init() {
     }
 }
 
-Renderer::Renderer() {
+Renderer::Renderer()
+{
     init();
 }

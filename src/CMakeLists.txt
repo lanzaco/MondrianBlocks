@@ -6,6 +6,7 @@ set(
         Blocks.cpp
         Renderer.cpp
         Solver.cpp
+        FileHandler.cpp
 )
 
 set(
@@ -16,6 +17,7 @@ set(
         Renderer.hpp
         Colors.hpp
         Defines.hpp
+        FileHandler.hpp
 )
 
 add_library(Code)
