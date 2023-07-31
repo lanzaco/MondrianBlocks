@@ -12,18 +12,6 @@ void Grid::setGridSize(int gridSize)
     m_gridSize = gridSize;
 }
 
-bool Grid::checkIfPlaceable()
-{
-}
-
-void Grid::placeBlock()
-{
-}
-
-void Grid::removeBlock()
-{
-}
-
 void Grid::clear()
 {
     m_grid.clear();

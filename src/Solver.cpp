@@ -1,5 +1,6 @@
 #include "Solver.hpp"
 
-void Solver::solve(Grid *grid) {
+void Solver::solve(Grid *grid)
+{
 
 }
