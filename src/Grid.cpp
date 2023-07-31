@@ -1,6 +1,6 @@
 #include "Grid.hpp"
 
-int Grid::m_gridSize{};
+int Grid::m_gridSize = 0;
 
 Grid::Grid()
 {
