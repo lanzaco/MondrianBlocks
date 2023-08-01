@@ -6,7 +6,7 @@ class Blocks
 
 public:
     Blocks(int x, int y, int sizeX, int sizeY, bool isRotated, SDL_Color color);
-    ~Blocks();
+    ~Blocks() = default;
     int getX() const;
     int getY() const;
     int getSizeX() const;

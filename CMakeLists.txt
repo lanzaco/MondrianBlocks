@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.23)
-set(PROJECT_NAME TestProject)
-project(${PROJECT_NAME})
+
+project(AbschlussProjekt)
 
 set(CMAKE_CXX_STANDARD 23)
+
+cmake_policy(SET CMP0135 NEW)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -11,27 +13,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SDL2)
 
-set(
-        SourceFiles
-        src/main.cpp
-        src/Grid.cpp
-        src/Blocks.cpp
+FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
 )
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
-set(
-        HeaderFiles
-        src/Grid.hpp
-        src/Blocks.hpp
-)
-
-add_executable(${PROJECT_NAME} ${SourceFiles} ${HeaderFiles})
-
-target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2main SDL2::SDL2)
-
-if (WIN32 OR WIN64)
-    add_custom_command(
-            TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL2::SDL2>" "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
-            VERBATIM
-    )
-endif()
+add_subdirectory(src)
+add_subdirectory(test)
