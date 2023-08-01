@@ -30,7 +30,7 @@ target_link_libraries(AbschlussProjekt PRIVATE SDL2::SDL2main SDL2::SDL2 PUBLIC 
 if (WIN32 OR WIN64)
     add_custom_command(
             TARGET AbschlussProjekt POST_BUILD
-            COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL2::SDL2>" "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+            COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL2::SDL2>" "$<TARGET_FILE_DIR:AbschlussProjekt>"
             VERBATIM
     )
 endif()
