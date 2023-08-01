@@ -14,12 +14,4 @@ ADD_TEST(
         COMMAND Tests
 )
 
-if (WIN32 OR WIN64)
-    add_custom_command(
-            TARGET Tests POST_BUILD
-            COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL2::SDL2>" "$<TARGET_FILE_DIR:Tests>"
-            COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:Tests> $<TARGET_RUNTIME_DLLS:Tests>
-            COMMAND_EXPAND_LISTS
-            VERBATIM
-    )
-endif()
+

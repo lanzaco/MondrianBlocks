@@ -1,12 +1,7 @@
 #include "Blocks.hpp"
 
 Blocks::Blocks(int x, int y, int sizeX, int sizeY, bool isRotated, SDL_Color color)
-    : m_x(x)
-    , m_y(y)
-    , m_sizeX(sizeX)
-    , m_sizeY(sizeY)
-    , m_isRotated(isRotated)
-    , m_color(color)
+    : m_x(x), m_y(y), m_sizeX(sizeX), m_sizeY(sizeY), m_isRotated(isRotated), m_color(color)
 {
 }
 

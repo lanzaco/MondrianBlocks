@@ -1,17 +1,17 @@
 #include <SDL.h>
-
-#include "Renderer.hpp"
-#include "FileHandler.hpp"
+#include "Game.hpp"
 
 int main(int argc, char *argv[])
 {
     //Input is unused
     (void)argc;
     (void)argv;
-    Renderer renderer{};
 
-    FileHandler file;
-    file.readFile();
+    //FileHandler file;
+    //file.readFile();
+
+    Game game{};
+    game.run(Grid());
 
     return 0;
 }

@@ -4,7 +4,6 @@ project(AbschlussProjekt)
 
 set(CMAKE_CXX_STANDARD 23)
 
-cmake_policy(SET CMP0135 NEW)
 
 include(FetchContent)
 FetchContent_Declare(

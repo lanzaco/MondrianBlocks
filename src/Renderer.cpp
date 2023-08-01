@@ -1,9 +1,10 @@
 #include "Renderer.hpp"
+#include "Colors.hpp"
 
 #include <iostream>
 
-SDL_Window* Renderer::m_window{nullptr};
-SDL_Renderer* Renderer::m_renderer{nullptr};
+SDL_Window *Renderer::m_window{nullptr};
+SDL_Renderer *Renderer::m_renderer{nullptr};
 
 void Renderer::init()
 {
@@ -15,7 +16,7 @@ void Renderer::init()
 
 #if defined linux && SDL_VERSION_ATLEAST(2, 0, 8)
     // Disable compositor bypass
-    if(!SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0"))
+    if (!SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0"))
     {
         std::cout << "SDL can not disable compositor bypass!" << std::endl;
         return 0;
@@ -41,4 +42,31 @@ void Renderer::init()
 Renderer::Renderer()
 {
     init();
+}
+
+void Renderer::drawRectWithBoarder(SDL_Rect rect, SDL_Color color)
+{
+    SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderFillRect(m_renderer, &rect);
+    SDL_SetRenderDrawColor(m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+    SDL_RenderDrawRect(m_renderer, &rect);
+}
+
+void Renderer::drawRect(SDL_Rect rect, SDL_Color color)
+{
+    SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderFillRect(m_renderer, &rect);
+}
+
+void Renderer::fillBackground(SDL_Color color)
+{
+    SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderClear(m_renderer);
+}
+
+void Renderer::end()
+{
+    SDL_DestroyRenderer(m_renderer);
+    SDL_DestroyWindow(m_window);
+    SDL_Quit();
 }

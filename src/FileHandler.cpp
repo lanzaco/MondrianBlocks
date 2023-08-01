@@ -3,21 +3,23 @@
 //
 
 #include "FileHandler.hpp"
-#include "Defines.hpp"
+#include "Colors.hpp"
 #include <utility>
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <regex>
+#include <string>
 
-Blocks* newBlock(std::vector<int> vecBlockCoordinate, int startIndex);
+Blocks *newBlock(std::vector<int> vecBlockCoordinate, int startIndex);
 std::vector<int> splitStreamIntoVec(std::string line);
 
-std::list<Grid*> FileHandler::readFile() {
+std::list<Grid *> FileHandler::readFile()
+{
     int gridSize = 0;
     std::ifstream input_stream("/Users/annikajung/Library/Mobile Documents/com~apple~CloudDocs/Uni Stuttgart/SoSe23/C++/Abschlussprojekt/src/data_file.txt");
-    //std::ifstream input_stream("../data_file.txt");
+    // std::ifstream input_stream("../data_file.txt");
+    // TODO: Relative Path
 
     if (!input_stream)
     {
@@ -33,7 +35,7 @@ std::list<Grid*> FileHandler::readFile() {
                 gridSize = std::stoi(line.substr(line.find("Gridsize: ") + 10, 1));
             }
             Grid::setGridSize(gridSize);
-            if(line.contains("Grid:"))
+            if (line.contains("Grid:"))
             {
                 setMGrid(line);
             }
@@ -44,10 +46,10 @@ std::list<Grid*> FileHandler::readFile() {
 
 void FileHandler::setMGrid(std::string line)
 {
-    std::vector<Blocks*> vecBlocks;
+    std::vector<Blocks *> vecBlocks;
     std::vector<int> vecBlockCoordinate = splitStreamIntoVec(std::move(line));
 
-    for (int startIndex = 0; startIndex < vecBlockCoordinate.size(); startIndex+=4)
+    for (int startIndex = 0; startIndex < vecBlockCoordinate.size(); startIndex += 4)
     {
         vecBlocks.push_back(newBlock(vecBlockCoordinate, startIndex));
     }
@@ -60,7 +62,7 @@ void FileHandler::setMGrid(std::string line)
 std::vector<int> splitStreamIntoVec(std::string line)
 {
     std::vector<int> vecBlockCoordinate;
-    std::regex regex(R"(\d+)");   // matches a sequence of digits
+    std::regex regex(R"(\d+)"); // matches a sequence of digits
     std::smatch match;
 
     while (std::regex_search(line, match, regex))
@@ -71,7 +73,7 @@ std::vector<int> splitStreamIntoVec(std::string line)
     return vecBlockCoordinate;
 }
 
-Blocks* newBlock(std::vector<int> vecBlockCoordinate, int startIndex)
+Blocks *newBlock(std::vector<int> vecBlockCoordinate, int startIndex)
 {
     int x;
     int y;
@@ -81,8 +83,6 @@ Blocks* newBlock(std::vector<int> vecBlockCoordinate, int startIndex)
     y = vecBlockCoordinate.at(startIndex + 1);
     sizeX = vecBlockCoordinate.at(startIndex + 2);
     sizeY = vecBlockCoordinate.at(startIndex + 3);
-    auto* newBlock = new Blocks(x, y, sizeX, sizeY, false, BLACK);
+    auto *newBlock = new Blocks(x, y, sizeX, sizeY, false, BLACK);
     return newBlock;
 }
-
-

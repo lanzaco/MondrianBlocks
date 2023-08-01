@@ -7,6 +7,7 @@ set(
         Renderer.cpp
         Solver.cpp
         FileHandler.cpp
+        Game.cpp
 )
 
 set(
@@ -18,6 +19,7 @@ set(
         Colors.hpp
         Defines.hpp
         FileHandler.hpp
+        Game.hpp
 )
 
 add_library(Code)
@@ -27,10 +29,3 @@ target_link_libraries(Code PRIVATE SDL2::SDL2main SDL2::SDL2)
 add_executable(AbschlussProjekt main.cpp)
 target_link_libraries(AbschlussProjekt PRIVATE SDL2::SDL2main SDL2::SDL2 PUBLIC Code)
 
-if (WIN32 OR WIN64)
-    add_custom_command(
-            TARGET AbschlussProjekt POST_BUILD
-            COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL2::SDL2>" "$<TARGET_FILE_DIR:AbschlussProjekt>"
-            VERBATIM
-    )
-endif()

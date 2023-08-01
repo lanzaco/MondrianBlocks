@@ -22,7 +22,8 @@ void Grid::setGridSize(int gridSize)
 void Grid::clear()
 {
     m_grid.clear();
-    for (int i = 0; i < m_gridSize * m_gridSize; ++i) {
+    for (int i = 0; i < m_gridSize * m_gridSize; ++i)
+    {
         m_grid.push_back(nullptr);
     }
 }
@@ -33,12 +34,14 @@ bool Grid::checkIfPlaceable(Blocks &block)
     int sizeX = block.getSizeX();
     int y = block.getY();
     int sizeY = block.getSizeY();
-    for (int i = x; i < x + sizeX; ++i) {
+    for (int i = x; i < x + sizeX; ++i)
+    {
         for (int j = y; j < y + sizeY; ++j)
         {
             if (m_grid.at(i * m_gridSize + j) != nullptr)
             {
-                if (m_grid.at(i * m_gridSize + j) != &block) return false;
+                if (m_grid.at(i * m_gridSize + j) != &block)
+                    return false;
             }
         }
     }
