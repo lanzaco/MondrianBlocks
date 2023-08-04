@@ -1,14 +1,18 @@
 #include "Renderer.hpp"
 #include "Colors.hpp"
+#include "Defines.hpp"
+#include "Grid.hpp"
 
 #include <iostream>
 
-SDL_Window *Renderer::m_window{nullptr};
-SDL_Renderer *Renderer::m_renderer{nullptr};
+int Renderer::m_maxSizePerSquare{0};
+
+SDL_Window* Renderer::m_window{nullptr};
+
+SDL_Renderer* Renderer::m_renderer{nullptr};
 
 void Renderer::init()
 {
-
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         throw std::invalid_argument("Error");
@@ -37,6 +41,7 @@ void Renderer::init()
     {
         throw std::invalid_argument("SDL2 could not create the renderer");
     }
+    windowSizeChanged();
 }
 
 Renderer::Renderer()
@@ -69,4 +74,26 @@ void Renderer::end()
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
+}
+
+void Renderer::windowSizeChanged()
+{
+    int gridSize{Grid::getGridSize()};
+    int windowHeight;
+    int windowWidth;
+    SDL_GetWindowSize(m_window, &windowWidth, &windowHeight);
+    int maxSizeGrid = std::min(windowHeight, windowWidth);
+    int margin = GRID_MARGIN * (gridSize - 1) + 2 * GRID_BORDER;
+    int maxSizePerSquare = (maxSizeGrid - margin) / gridSize;
+    m_maxSizePerSquare = maxSizePerSquare;
+}
+
+void Renderer::drawRectWithBoarder(Blocks *block)
+{
+    SDL_Color color = block->getColor();
+    SDL_Rect* rect = block->getRect();
+    SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderFillRect(m_renderer, rect);
+    SDL_SetRenderDrawColor(m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+    SDL_RenderDrawRect(m_renderer, rect);
 }

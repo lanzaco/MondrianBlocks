@@ -1,21 +1,25 @@
 
 #include "Game.hpp"
-#include "Renderer.hpp"
 #include "Grid.hpp"
 #include "Colors.hpp"
+#include "Defines.hpp"
 
-#include <list>
+#include <vector>
 
-void Game::run(Grid grid)
+void Game::run(Grid* grid)
 {
     bool quit{false};
     bool leftMouseButtonPressed{false};
-    SDL_Point mousePosition{};
-    SDL_Point clickOffset{};
+    SDL_Point mousePosition{0,0};
+    SDL_Point clickOffset{0,0};
     SDL_Rect *selectedRect{nullptr};
     Blocks *selectedBlock{nullptr};
-    std::list<SDL_Rect *> rectangles; // TODO: get all rectangles
-    std::list<Blocks *> blocks;       // TODO: get all blocks
+    std::vector<SDL_Rect *>* rectangles;
+    std::vector<Blocks *>* blocks;
+    Renderer::windowSizeChanged();
+
+    blocks = grid->getBlocks();
+    rectangles = grid->getRectangles();
 
     while (!quit)
     {
@@ -43,12 +47,13 @@ void Game::run(Grid grid)
             if (leftMouseButtonPressed && event.button.button == SDL_BUTTON_LEFT)
             {
                 leftMouseButtonPressed = false;
-                for (auto currentBlock : blocks)
+                if (selectedBlock)
                 {
-                    // TODO: move Block
+                    grid->moveBlock(selectedBlock);
                 }
             }
             selectedRect = nullptr;
+            selectedBlock = nullptr;
         }
 
         if (event.type == SDL_MOUSEBUTTONDOWN)
@@ -57,7 +62,7 @@ void Game::run(Grid grid)
             {
                 leftMouseButtonPressed = true;
 
-                for (auto currentRect : rectangles)
+                for (auto currentRect : *rectangles)
                 {
                     if (SDL_PointInRect(&mousePosition, currentRect))
                     {
@@ -66,21 +71,32 @@ void Game::run(Grid grid)
                         clickOffset.y = mousePosition.y - currentRect->y;
                     }
                 }
+
+                for (auto currentBlock : *blocks)
+                {
+                    if (selectedRect == currentBlock->getRect())
+                    {
+                        selectedBlock = currentBlock;
+                    }
+                }
             }
         }
 
         if (event.window.event == SDL_WINDOWEVENT_RESIZED)
         {
-            for (auto currentBlock : blocks)
-            {
-                // TODO: update Rectangle
-                currentBlock;
-            }
+            Renderer::windowSizeChanged();
+            grid->updateRectangles();
         }
 
-        Renderer::fillBackground(GRAY);
+        Renderer::fillBackground(BACKGROUND_COLOR);
 
-        // TODO: draw Grid
+        grid->draw();
+
+        //Draw selected Block again, so its on top of all other Rectangles
+        if (selectedBlock)
+        {
+            Renderer::drawRectWithBoarder(selectedBlock);
+        }
 
         SDL_RenderPresent(Renderer::m_renderer);
     }

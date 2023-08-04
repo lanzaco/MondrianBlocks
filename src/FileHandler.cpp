@@ -83,6 +83,6 @@ Blocks *newBlock(std::vector<int> vecBlockCoordinate, int startIndex)
     y = vecBlockCoordinate.at(startIndex + 1);
     sizeX = vecBlockCoordinate.at(startIndex + 2);
     sizeY = vecBlockCoordinate.at(startIndex + 3);
-    auto *newBlock = new Blocks(x, y, sizeX, sizeY, false, BLACK);
+    auto *newBlock = new Blocks(x, y, sizeX, sizeY, BLACK);
     return newBlock;
 }

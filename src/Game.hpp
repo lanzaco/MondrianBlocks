@@ -7,7 +7,7 @@ class Game
 {
 public:
     Game() = default;
-    void run(Grid grid);
+    static void run(Grid* grid);
 
 protected:
 private:
