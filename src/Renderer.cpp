@@ -97,3 +97,35 @@ void Renderer::drawRectWithBoarder(Blocks *block)
     SDL_SetRenderDrawColor(m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
     SDL_RenderDrawRect(m_renderer, rect);
 }
+
+void Renderer::drawRectangle(const float x, const float y, const float width, const float height,
+                             const orientation orientation)
+{
+    std::vector<SDL_Vertex> triangle;
+    triangle.clear();
+    switch (orientation) {
+
+        case UP:
+            triangle.push_back({SDL_FPoint{x + width/2, y}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x, y + height}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width, y + height}, BLACK, SDL_FPoint{0}});
+            break;
+        case RIGHT:
+            triangle.push_back({SDL_FPoint{x + width, y + height/2}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x, y}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x, y + height}, BLACK, SDL_FPoint{0}});
+            break;
+        case DOWN:
+            triangle.push_back({SDL_FPoint{x + width/2, y + height}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x, y}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width, y}, BLACK, SDL_FPoint{0}});
+            break;
+        case LEFT:
+            triangle.push_back({SDL_FPoint{x, y + height/2}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width, y + height}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width, y}, BLACK, SDL_FPoint{0}});
+            break;
+    }
+
+    SDL_RenderGeometry( Renderer::m_renderer, nullptr, triangle.data(), static_cast<int>(triangle.size()), nullptr, 0 );
+}

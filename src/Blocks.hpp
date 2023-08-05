@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <tuple>
 
 class Blocks
 {
@@ -18,6 +19,7 @@ public:
     std::pair<int, int> getNewCoords();
     void setX(int x);
     void setY(int y);
+    void rotate();
 
 private:
     int m_x;

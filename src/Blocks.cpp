@@ -78,3 +78,12 @@ void Blocks::setX(int x) {
 void Blocks::setY(int y) {
     m_y = y;
 }
+
+void Blocks::rotate() {
+    m_isRotated = !m_isRotated;
+    int x = m_rect.x;
+    int y = m_rect.y;
+    int height = m_rect.h;
+    int width = m_rect.w;
+    m_rect = {x,y,height,width};
+}
