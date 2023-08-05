@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 
     Game game{};
     Grid grid{};
-    Game::run(&grid);
+    game.run(&grid);
 
     return 0;
 }

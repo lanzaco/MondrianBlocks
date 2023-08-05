@@ -6,14 +6,19 @@
 
 #include <vector>
 
+Game::Game ()
+    : m_quit(false),
+    m_leftMouseButtonPressed(false),
+    m_mousePosition({0,0}),
+    m_clickOffset({0,0}),
+    m_selectedRect(nullptr),
+    m_selectedBlock(nullptr)
+{
+
+}
 void Game::run(Grid* grid)
 {
-    bool quit{false};
-    bool leftMouseButtonPressed{false};
-    SDL_Point mousePosition{0,0};
-    SDL_Point clickOffset{0,0};
-    SDL_Rect *selectedRect{nullptr};
-    Blocks *selectedBlock{nullptr};
+
 
     std::vector<SDL_Rect *>* rectangles;
     std::vector<Blocks *>* blocks;
@@ -26,7 +31,7 @@ void Game::run(Grid* grid)
     rectangles = grid->getRectangles();
     notPlacedBlocks = grid->getNotPlacedBlocks();
 
-    while (!quit)
+    while (!m_quit)
     {
 
         SDL_Event event;
@@ -34,46 +39,46 @@ void Game::run(Grid* grid)
 
         if (event.type == SDL_QUIT)
         {
-            quit = true;
+            m_quit = true;
         }
 
         if (event.type == SDL_MOUSEMOTION)
         {
-            mousePosition = {event.motion.x, event.motion.y};
-            if (leftMouseButtonPressed && selectedRect != nullptr)
+            m_mousePosition = {event.motion.x, event.motion.y};
+            if (m_leftMouseButtonPressed && m_selectedRect != nullptr)
             {
-                selectedRect->x = mousePosition.x - clickOffset.x;
-                selectedRect->y = mousePosition.y - clickOffset.y;
+                m_selectedRect->x = m_mousePosition.x - m_clickOffset.x;
+                m_selectedRect->y = m_mousePosition.y - m_clickOffset.y;
             }
         }
 
         if (event.type == SDL_MOUSEBUTTONUP)
         {
-            if (leftMouseButtonPressed && event.button.button == SDL_BUTTON_LEFT)
+            if (m_leftMouseButtonPressed && event.button.button == SDL_BUTTON_LEFT)
             {
-                leftMouseButtonPressed = false;
-                if (selectedBlock)
+                m_leftMouseButtonPressed = false;
+                if (m_selectedBlock)
                 {
-                    grid->moveBlock(selectedBlock);
+                    grid->moveBlock(m_selectedBlock);
                 }
-                selectedRect = nullptr;
-                selectedBlock = nullptr;
+                m_selectedRect = nullptr;
+                m_selectedBlock = nullptr;
             }
         }
 
         if (event.type == SDL_MOUSEBUTTONDOWN)
         {
-            if (!leftMouseButtonPressed && event.button.button == SDL_BUTTON_LEFT)
+            if (!m_leftMouseButtonPressed && event.button.button == SDL_BUTTON_LEFT)
             {
-                leftMouseButtonPressed = true;
+                m_leftMouseButtonPressed = true;
 
                 for (auto currentRect : *rectangles)
                 {
-                    if (SDL_PointInRect(&mousePosition, currentRect))
+                    if (SDL_PointInRect(&m_mousePosition, currentRect))
                     {
-                        selectedRect = currentRect;
-                        clickOffset.x = mousePosition.x - currentRect->x;
-                        clickOffset.y = mousePosition.y - currentRect->y;
+                        m_selectedRect = currentRect;
+                        m_clickOffset.x = m_mousePosition.x - currentRect->x;
+                        m_clickOffset.y = m_mousePosition.y - currentRect->y;
                     }
                 }
 
@@ -82,10 +87,10 @@ void Game::run(Grid* grid)
                     int distance = (Grid::m_gridSize * Renderer::m_maxSizePerSquare) + 2 * GRID_MARGIN;
                     Blocks* currentBlock = notPlacedBlocks->at(Grid::m_counter);
                     SDL_Rect dropArea = {distance + 100 + 2 * GRID_MARGIN, GRID_MARGIN, currentBlock->getSizeX()*Renderer::m_maxSizePerSquare, currentBlock->getSizeY()*Renderer::m_maxSizePerSquare};
-                    if (SDL_PointInRect(&mousePosition, &dropArea))
+                    if (SDL_PointInRect(&m_mousePosition, &dropArea))
                     {
-                        selectedBlock = currentBlock;
-                        selectedRect = currentBlock->getRect();
+                        m_selectedBlock = currentBlock;
+                        m_selectedRect = currentBlock->getRect();
                     }
                 }
 
@@ -99,29 +104,29 @@ void Game::run(Grid* grid)
                 int height = 200;
                 SDL_Rect leftTriangle{distance, y/2 - width/2, width, height};
                 SDL_Rect rightTriangle{distance + sizeBox, y/2 - width/2, width, height};
-                if (SDL_PointInRect(&mousePosition, &leftTriangle))
+                if (SDL_PointInRect(&m_mousePosition, &leftTriangle))
                 {
                     Grid::m_counter--;
                 }
 
-                if (SDL_PointInRect(&mousePosition, &rightTriangle))
+                if (SDL_PointInRect(&m_mousePosition, &rightTriangle))
                 {
                     Grid::m_counter++;
                 }
 
                 for (auto currentBlock : *blocks)
                 {
-                    if (selectedRect == currentBlock->getRect())
+                    if (m_selectedRect == currentBlock->getRect())
                     {
-                        selectedBlock = currentBlock;
+                        m_selectedBlock = currentBlock;
                     }
                 }
             }
-            if (leftMouseButtonPressed && event.button.button == SDL_BUTTON_RIGHT)
+            if (m_leftMouseButtonPressed && event.button.button == SDL_BUTTON_RIGHT)
             {
-                if (selectedBlock != nullptr)
+                if (m_selectedBlock != nullptr)
                 {
-                    selectedBlock->rotate();
+                    m_selectedBlock->rotate();
                 }
             }
         }
@@ -138,13 +143,13 @@ void Game::run(Grid* grid)
         grid->showMissingBlocks();
 
         //Draw selected Block again, so its on top of all other Rectangles
-        if (selectedBlock)
+        if (m_selectedBlock)
         {
-            Renderer::drawRectWithBoarder(selectedBlock);
+            Renderer::drawRectWithBoarder(m_selectedBlock);
         }
           if (grid->checkIfWon())
         {
-            quit = true;
+            m_quit = true;
         }
 
         SDL_RenderPresent(Renderer::m_renderer);
