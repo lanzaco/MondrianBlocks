@@ -5,10 +5,6 @@ project(AbschlussProjekt)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_C_STANDARD 17)
 
-if (${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.24)
-    cmake_policy(SET CMP0135 NEW)
-endif ()
-
 include(FetchContent)
 
 option(BUILD_SHARED_LIBS "" OFF)
@@ -29,7 +25,6 @@ FetchContent_Declare(
         SDL2
         GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
         GIT_TAG release-2.28.2
-        OVERRIDE_FIND_PACKAGE
 )
 FetchContent_MakeAvailable(SDL2)
 
@@ -37,7 +32,6 @@ FetchContent_Declare(
         SDL2_image
         GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
         GIT_TAG release-2.6.3
-        OVERRIDE_FIND_PACKAGE
 )
 FetchContent_MakeAvailable(SDL2_image)
 
@@ -45,7 +39,6 @@ FetchContent_Declare(
         SDL2_ttf
         GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
         GIT_TAG release-2.20.2
-        OVERRIDE_FIND_PACKAGE
 )
 FetchContent_MakeAvailable(SDL2_ttf)
 
