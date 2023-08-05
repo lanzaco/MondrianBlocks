@@ -253,3 +253,24 @@ void Grid::showMissingBlocks() {
 std::vector<Blocks *> *Grid::getNotPlacedBlocks() {
     return &m_notPlacedBlocks;
 }
+
+bool Grid::checkIfWon()
+{
+    
+    if (!m_notPlacedBlocks.empty())
+    {
+        return false;
+    }
+
+ 
+    for (int i = 0; i < m_gridSize * m_gridSize; ++i)
+    {
+        if (m_grid.at(i) == nullptr)
+        {
+            return false;
+        }
+    }
+
+   
+    return true;
+}

@@ -142,6 +142,10 @@ void Game::run(Grid* grid)
         {
             Renderer::drawRectWithBoarder(selectedBlock);
         }
+          if (grid->checkIfWon())
+        {
+            quit = true;
+        }
 
         SDL_RenderPresent(Renderer::m_renderer);
     }

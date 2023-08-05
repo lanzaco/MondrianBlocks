@@ -18,6 +18,7 @@ public:
     void draw();
     void moveBlock(Blocks* block);
     void showMissingBlocks();
+    bool checkIfWon();
 
     static void setGridSize(int gridSize);
 
