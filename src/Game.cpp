@@ -160,7 +160,11 @@ void Game::run(Grid *grid)
 
                 m_selectedBlock = findSelectedBlock(blocks);
             }
-            if (m_leftMouseButtonPressed && event.button.button == SDL_BUTTON_RIGHT)
+        }
+
+        if (event.type == SDL_KEYDOWN)
+        {
+            if (event.key.keysym.sym == SDLK_r)
             {
                 rotateSelectedBlock();
             }
