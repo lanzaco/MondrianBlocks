@@ -10,6 +10,7 @@
 #include <fstream>
 #include <regex>
 #include <string>
+#include <filesystem>
 
 Blocks *newBlock(std::vector<int> vecBlockCoordinate, int startIndex);
 std::vector<int> splitStreamIntoVec(std::string line);
@@ -17,16 +18,19 @@ std::vector<int> splitStreamIntoVec(std::string line);
 std::list<Grid *> FileHandler::readFile()
 {
     int gridSize = 0;
-    std::ifstream input_stream("/Users/annikajung/Library/Mobile Documents/com~apple~CloudDocs/Uni Stuttgart/SoSe23/C++/Abschlussprojekt/src/data_file.txt");
-    // std::ifstream input_stream("../data_file.txt");
-    // TODO: Relative Path
+    std::string file_name = "data_file.txt";
 
-    if (!input_stream)
+   
+    std::ifstream input_stream("./../../src/data_file.txt");
+
+      if (!input_stream)
     {
-        std::cerr << "Can't open input file!";
+        std::cerr << "Can't open input file!" << std::endl;
+        ;
     }
     else
     {
+        std::cout << "Geoffnet";
         std::string line;
         while (getline(input_stream, line))
         {
