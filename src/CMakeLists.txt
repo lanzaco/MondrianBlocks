@@ -31,7 +31,7 @@ target_link_libraries(Code PRIVATE SDL2::SDL2main SDL2::SDL2 SDL2_ttf::SDL2_ttf-
 add_executable(AbschlussProjekt main.cpp)
 target_link_libraries(AbschlussProjekt PRIVATE SDL2::SDL2-static SDL2::SDL2main SDL2_ttf::SDL2_ttf-static PUBLIC Code)
 
-if (WIN32 OR WIN64 OR NOT MSVC)
+if ((WIN32 OR WIN64) AND NOT MSVC)
     add_custom_command(
             TARGET AbschlussProjekt POST_BUILD
             COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL2::SDL2>" "$<TARGET_FILE_DIR:AbschlussProjekt>"
