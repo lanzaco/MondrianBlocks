@@ -60,6 +60,10 @@ void Game::selectNotPlacedBlockWithMouse(const std::vector<Blocks *> &notPlacedB
         {
             m_selectedBlock = currentBlock;
             m_selectedRect = currentBlock->getRect();
+            m_selectedRect->x = dropArea.x;
+            m_selectedRect->y = dropArea.y;
+            m_clickOffset.x = m_mousePosition.x - currentBlock->getRect()->x;
+            m_clickOffset.y = m_mousePosition.y - currentBlock->getRect()->y;
         }
     }
 }

@@ -1,6 +1,9 @@
 #pragma once
 
+#include "Grid.hpp"
+
 class UserInterface {
 public:
-    void showMenue();
+    static void showMenu();
+    static Grid* chooseGrid();
 };

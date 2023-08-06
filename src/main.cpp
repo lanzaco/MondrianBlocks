@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include "Game.hpp"
+#include "UserInterface.hpp"
 #include "FileHandler.hpp"
 
 int main(int argc, char *argv[])
@@ -8,12 +9,9 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
 
-    FileHandler file;
-    file.readFile();
+    //FileHandler file;
+    //file.readFile();
 
-    Game game{};
-    Grid grid{};
-    game.run(&grid);
-
+    UserInterface::showMenu();
     return 0;
 }

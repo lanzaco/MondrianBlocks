@@ -11,11 +11,12 @@ public:
     ~Grid() = default;
 
     void clear();
-    bool checkIfPlaceable(Blocks* block)const;
+    bool checkIfPlaceable(Blocks* block) const;
     void placeBlock(Blocks* block);
     void removeBlock(Blocks* block);
     void updateRectangles();
-    void draw()const;
+    void draw() const;
+    void drawPreview();
     void moveBlock(Blocks* block);
     void showMissingBlocks()const;
     bool checkIfWon()const;

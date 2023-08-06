@@ -8,6 +8,7 @@ set(
         Solver.cpp
         FileHandler.cpp
         Game.cpp
+        UserInterface.cpp
 )
 
 set(
@@ -20,6 +21,7 @@ set(
         Defines.hpp
         FileHandler.hpp
         Game.hpp
+        UserInterface.hpp
 )
 
 add_library(Code)

@@ -53,7 +53,12 @@ Grid::Grid(std::vector<Blocks *> grid)
                 m_grid.at(i * Grid::m_gridSize + j) = currentBlock;
             }
         }
-        m_rects.push_back(currentBlock->getRect());
+        SDL_Color color = currentBlock->getColor();
+        bool isBlack = (color.r == BLACK.r) && (color.g == BLACK.g) && (color.b == BLACK.b) && (color.a == BLACK.a);
+        if (!isBlack)
+        {
+            m_rects.push_back(currentBlock->getRect());
+        }
     }
     updateRectangles();
 }
@@ -150,9 +155,17 @@ void Grid::placeBlock(Blocks* block)
 void Grid::removeBlock(Blocks* block)
 {
     int x = block->getX();
-    int sizeX = block->getSizeX();
     int y = block->getY();
+    int sizeX = block->getSizeX();
     int sizeY = block->getSizeY();
+
+    if (block->getIsRotated())
+    {
+        int tmp = sizeX;
+        sizeX = sizeY;
+        sizeY = tmp;
+    }
+
     for (int i = y; i < y + sizeY; ++i)
     {
         for (int j = x; j < x + sizeX; ++j)
@@ -205,6 +218,29 @@ void Grid::draw()const {
     }
 }
 
+void Grid::drawPreview() {
+    int x;
+    int y;
+    SDL_GetWindowSize(Renderer::m_window, &x, &y);
+
+    int maxSize = std::min(x,y)/(2 * m_gridSize);
+    int margin = GRID_MARGIN;
+    int xOffset = (x/2 - (maxSize * m_gridSize)/2);
+    int yOffset = (y/2 - (maxSize * m_gridSize)/2);
+    for (int i = 0; i < m_gridSize; ++i) {
+        for (int j = 0; j < m_gridSize; ++j) {
+            Renderer::drawRect({maxSize * j + xOffset, maxSize * i + yOffset,
+                                maxSize - margin, maxSize - margin},WHITE);
+        }
+    }
+
+    for (auto currentBlock : m_blocks) {
+        SDL_Rect previewRect = {currentBlock->getX() * maxSize + xOffset, currentBlock->getY() * maxSize + yOffset, currentBlock->getSizeX() * maxSize - margin, currentBlock->getSizeY() * maxSize - margin};
+        Renderer::drawRectWithBoarder(previewRect, currentBlock->getColor());
+    }
+
+}
+
 void Grid::moveBlock(Blocks* block) {
     if (checkIfPlaceable(block))
     {
@@ -236,8 +272,10 @@ void Grid::showMissingBlocks()const {
     int distance = (Grid::m_gridSize * Renderer::m_maxSizePerSquare) + 2 * GRID_MARGIN;
     int sizeBox = (Renderer::m_maxSizePerSquare * 5) + 2 * GRID_MARGIN;
 
-    Renderer::drawRectangle(static_cast<float>(distance), static_cast<float>(y)/2, static_cast<float>(width), static_cast<float>(height), LEFT);
-    Renderer::drawRectangle(static_cast<float>(distance + sizeBox), static_cast<float>(y)/2, static_cast<float>(width), static_cast<float>(height), RIGHT);
+    Renderer::drawTriangle(static_cast<float>(distance), static_cast<float>(y) / 2, static_cast<float>(width),
+                           static_cast<float>(height), LEFT);
+    Renderer::drawTriangle(static_cast<float>(distance + sizeBox), static_cast<float>(y) / 2, static_cast<float>(width),
+                           static_cast<float>(height), RIGHT);
 
     if (m_counter < 0) m_counter = static_cast<int>(m_notPlacedBlocks.size()) - 1;
     if (m_counter >= m_notPlacedBlocks.size()) m_counter = 0;
