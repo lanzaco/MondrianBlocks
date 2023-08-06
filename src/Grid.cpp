@@ -72,7 +72,7 @@ void Grid::clear()
     }
 }
 
-bool Grid::checkIfPlaceable(Blocks* block)
+bool Grid::checkIfPlaceable(Blocks* block)const
 {
     int x;
     int y;
@@ -189,7 +189,7 @@ void Grid::updateRectangles() {
     }
 }
 
-void Grid::draw() {
+void Grid::draw()const {
     int maxSize = Renderer::m_maxSizePerSquare;
     int border = GRID_BORDER;
     int margin = GRID_MARGIN;
@@ -226,7 +226,7 @@ void Grid::moveBlock(Blocks* block) {
     block->updateRect();
 }
 
-void Grid::showMissingBlocks() {
+void Grid::showMissingBlocks()const {
     int width = 100;
     int height = 100;
     int x;
@@ -254,7 +254,7 @@ std::vector<Blocks *> *Grid::getNotPlacedBlocks() {
     return &m_notPlacedBlocks;
 }
 
-bool Grid::checkIfWon()
+bool Grid::checkIfWon()const
 {
     
     if (!m_notPlacedBlocks.empty())
