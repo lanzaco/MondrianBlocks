@@ -11,8 +11,8 @@ public:
     void handleMouseClick(Grid *grid);
     void selectRectWithMouse(const std::vector<SDL_Rect *> &rectangles);
     void selectNotPlacedBlockWithMouse(const std::vector<Blocks *> &notPlacedBlocks);
-    void handleTriangleClick(SDL_Rect &leftTriangle, SDL_Rect &rightTriangle);
-    Blocks *findSelectedBlock(const std::vector<Blocks *> &blocks);
+    void handleTriangleClick();
+    Blocks *findSelectedBlock(const std::vector<Blocks *> *blocks);
     void rotateSelectedBlock();
     void run(Grid *grid);
 

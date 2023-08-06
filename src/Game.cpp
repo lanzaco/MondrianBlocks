@@ -64,8 +64,18 @@ void Game::selectNotPlacedBlockWithMouse(const std::vector<Blocks *> &notPlacedB
     }
 }
 
-void Game::handleTriangleClick(SDL_Rect &leftTriangle, SDL_Rect &rightTriangle)
+void Game::handleTriangleClick()
 {
+    int x;
+    int y;
+    SDL_GetWindowSize(Renderer::m_window, &x, &y);
+
+    int distance = (Grid::m_gridSize * Renderer::m_maxSizePerSquare) + 2 * GRID_MARGIN;
+    int sizeBox = (Renderer::m_maxSizePerSquare * 5) + 2 * GRID_MARGIN;
+    int width = 100;
+    int height = 200;
+    SDL_Rect leftTriangle{distance, y / 2 - width / 2, width, height};
+    SDL_Rect rightTriangle{distance + sizeBox, y / 2 - width / 2, width, height};
     if (SDL_PointInRect(&m_mousePosition, &leftTriangle))
     {
         Grid::m_counter--;
@@ -77,17 +87,16 @@ void Game::handleTriangleClick(SDL_Rect &leftTriangle, SDL_Rect &rightTriangle)
     }
 }
 
-// TODO
-Blocks *Game::findSelectedBlock(const std::vector<Blocks *> &blocks)
+Blocks *Game::findSelectedBlock(const std::vector<Blocks *> *blocks)
 {
-    for (auto currentBlock : blocks)
+    for (auto currentBlock : *blocks)
     {
         if (m_selectedRect == currentBlock->getRect())
         {
             return currentBlock;
         }
     }
-    return nullptr;
+    return m_selectedBlock;
 }
 
 void Game::rotateSelectedBlock()
@@ -128,7 +137,7 @@ void Game::run(Grid *grid)
             m_mousePosition = {event.motion.x, event.motion.y};
             moveSelectedRectWithMouse();
         }
-        // TODO
+
         if (event.type == SDL_MOUSEBUTTONUP)
         {
             if (m_leftMouseButtonPressed && event.button.button == SDL_BUTTON_LEFT)
@@ -137,7 +146,6 @@ void Game::run(Grid *grid)
             }
         }
 
-        // TODO
         if (event.type == SDL_MOUSEBUTTONDOWN)
         {
             if (!m_leftMouseButtonPressed && event.button.button == SDL_BUTTON_LEFT)
@@ -148,26 +156,9 @@ void Game::run(Grid *grid)
 
                 selectNotPlacedBlockWithMouse(*notPlacedBlocks);
 
-                int x;
-                int y;
-                SDL_GetWindowSize(Renderer::m_window, &x, &y);
+                handleTriangleClick();
 
-                int distance = (Grid::m_gridSize * Renderer::m_maxSizePerSquare) + 2 * GRID_MARGIN;
-                int sizeBox = (Renderer::m_maxSizePerSquare * 5) + 2 * GRID_MARGIN;
-                int width = 100;
-                int height = 200;
-                SDL_Rect leftTriangle{distance, y / 2 - width / 2, width, height};
-                SDL_Rect rightTriangle{distance + sizeBox, y / 2 - width / 2, width, height};
-                handleTriangleClick(leftTriangle, rightTriangle);
-
-                // TODO
-                for (auto currentBlock : *blocks)
-                {
-                    if (m_selectedRect == currentBlock->getRect())
-                    {
-                        m_selectedBlock = currentBlock;
-                    }
-                }
+                m_selectedBlock = findSelectedBlock(blocks);
             }
             if (m_leftMouseButtonPressed && event.button.button == SDL_BUTTON_RIGHT)
             {
