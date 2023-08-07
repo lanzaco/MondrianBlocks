@@ -1,6 +1,6 @@
 #include <SDL.h>
-
-#include "Renderer.hpp"
+#include "Game.hpp"
+#include "UserInterface.hpp"
 #include "FileHandler.hpp"
 
 int main(int argc, char *argv[])
@@ -8,10 +8,10 @@ int main(int argc, char *argv[])
     //Input is unused
     (void)argc;
     (void)argv;
-    Renderer renderer{};
 
-    FileHandler file;
-    file.readFile();
+    //FileHandler file;
+    //file.readFile();
 
+    UserInterface::showMenu();
     return 0;
 }

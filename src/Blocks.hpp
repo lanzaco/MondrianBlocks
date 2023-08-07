@@ -1,11 +1,12 @@
 #pragma once
 #include <SDL.h>
+#include <tuple>
 
 class Blocks
 {
 
 public:
-    Blocks(int x, int y, int sizeX, int sizeY, bool isRotated, SDL_Color color);
+    Blocks(int x, int y, int sizeX, int sizeY, SDL_Color color, bool isRotated = false);
     ~Blocks() = default;
     int getX() const;
     int getY() const;
@@ -13,7 +14,12 @@ public:
     int getSizeY() const;
     bool getIsRotated() const;
     SDL_Color getColor() const;
-    SDL_Rect getRect() const;
+    SDL_Rect* getRect();
+    void updateRect();
+    std::pair<int, int> getNewCoords();
+    void setX(int x);
+    void setY(int y);
+    void rotate();
 
 private:
     int m_x;

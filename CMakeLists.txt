@@ -3,19 +3,49 @@ cmake_minimum_required(VERSION 3.23)
 project(AbschlussProjekt)
 
 set(CMAKE_CXX_STANDARD 23)
-
-cmake_policy(SET CMP0135 NEW)
+set(CMAKE_C_STANDARD 17)
 
 include(FetchContent)
+
+option(BUILD_SHARED_LIBS "" OFF)
+option(BUILD_SAMPLES "" OFF)
+option(SDL2IMAGE_SAMPLES "" OFF)
+option(SDL2IMAGE_INSTALL "" OFF)
+option(SDL2IMAGE_VENDORED "" ON)
+option(SDL2MIXER_SAMPLES "" OFF)
+option(SDL2MIXER_INSTALL "" OFF)
+option(SDL2MIXER_VENDORED "" ON)
+option(SDL2TTF_SAMPLES "" OFF)
+option(SDL2TTF_INSTALL "" OFF)
+option(SDL2TTF_VENDORED "" ON)
+option(SDL_STATIC_PIC "" ON)
+option(SUPPORT_OGG "" ON)
+
 FetchContent_Declare(
         SDL2
-        URL     https://codeload.github.com/libsdl-org/SDL/zip/refs/tags/release-2.28.1
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+        GIT_TAG release-2.28.2
 )
 FetchContent_MakeAvailable(SDL2)
 
 FetchContent_Declare(
+        SDL2_image
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
+        GIT_TAG release-2.6.3
+)
+FetchContent_MakeAvailable(SDL2_image)
+
+FetchContent_Declare(
+        SDL2_ttf
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
+        GIT_TAG release-2.20.2
+)
+FetchContent_MakeAvailable(SDL2_ttf)
+
+FetchContent_Declare(
         googletest
-        URL https://codeload.github.com/google/googletest/zip/refs/tags/v1.13.0
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.14.0
 )
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)

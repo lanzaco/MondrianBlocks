@@ -5,15 +5,15 @@
 
 #include "Grid.hpp"
 #include <list>
+#include <string>
 
-class FileHandler{
+class FileHandler
+{
 public:
     FileHandler() = default;
-    std::list<Grid*> readFile();
+    std::vector<Grid *> readFile();
     void setMGrid(std::string line);
+
 private:
-
-    std::list<Grid*> m_listGrid;
+    std::vector<Grid *> m_listGrid;
 };
-
-

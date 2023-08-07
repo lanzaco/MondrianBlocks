@@ -3,10 +3,12 @@
 #include "Grid.hpp"
 #include "Blocks.hpp"
 
-class Solver {
+class Solver
+{
 public:
     Solver() = default;
-    void solve(Grid* grid);
+    void solve(Grid *grid);
+
 protected:
 private:
 };

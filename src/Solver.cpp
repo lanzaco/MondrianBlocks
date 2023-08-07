@@ -2,5 +2,4 @@
 
 void Solver::solve(Grid *grid)
 {
-
 }
