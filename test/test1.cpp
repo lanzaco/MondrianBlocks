@@ -2,8 +2,10 @@
 #include "SDL.h"
 
 //Needed to make it work with SDL
-int main(int arc, char* argv[])
+int main(int argc, char* argv[])
 {
+    ::testing::InitGoogleTest(&argc, argv);
+    RUN_ALL_TESTS();
     return 0;
 }
 

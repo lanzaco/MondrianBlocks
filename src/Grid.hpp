@@ -27,6 +27,7 @@ public:
     std::vector<Blocks*>* getBlocks();
     std::vector<SDL_Rect*>* getRectangles();
     std::vector<Blocks*>* getNotPlacedBlocks();
+    std::vector<Blocks*>* getGrid();
 
     static int m_counter;
     static int m_gridSize;
