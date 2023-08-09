@@ -1,31 +1,6 @@
 #include "gtest/gtest.h"
 #include "../src/Blocks.hpp"
-#include "../src/Colors.hpp"
 
-/*
- class GameTest : public::testing::Test
-{
-protected:
-    Game m_game;
-    virtual void SetUp() override
-    {
-        m_game = Game();
-    }
-    void rollOnlyThisNumber(int rolls, int pins)
-    {
-        for (int i = 0; i < rolls; ++i)
-        {
-            m_game.roll(pins);
-        }
-    }
-};
-
-TEST_F(GameTest, ScoreIsZeroWithOnlyZeroRolls)
-{
-    rollOnlyThisNumber(20,0);
-    EXPECT_EQ(m_game.getScore(), 0);
-}
- */
 
 class BlockClassTest : public::testing::Test
 {
