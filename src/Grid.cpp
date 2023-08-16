@@ -63,7 +63,7 @@ Grid::Grid(std::vector<Blocks *> grid)
     updateRectangles();
 }
 
-void Grid::setGridSize(int gridSize)
+void Grid::setGridSize(const int gridSize)
 {
     m_gridSize = gridSize;
 }
@@ -131,8 +131,11 @@ void Grid::placeBlock(Blocks* block)
     auto new_end = std::remove(m_notPlacedBlocks.begin(), m_notPlacedBlocks.end(), block);
     m_notPlacedBlocks.erase(new_end, m_notPlacedBlocks.end());
 
-    m_rects.push_back(block->getRect());
-    m_blocks.push_back(block);
+    if(!gridContainsBlock(block))
+    {
+        m_rects.push_back(block->getRect());
+        m_blocks.push_back(block);
+    }
 
     for (auto& currentBlock : m_grid)
     {
@@ -366,3 +369,10 @@ difficulty Grid::getDifficulty() {
     return difficulty::impossible;
 }
 
+
+
+bool Grid::gridContainsBlock(const Blocks *block) const
+{
+    return std::ranges::any_of(m_grid.cbegin(), m_grid.cend(),
+                               [block](Blocks *currentBlock){return currentBlock == block;});
+}

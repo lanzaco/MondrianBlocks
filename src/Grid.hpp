@@ -25,12 +25,11 @@ public:
     void draw() const;
     void drawPreview();
     void moveBlock(Blocks* block);
-    void showMissingBlocks()const;
-    bool checkIfWon()const;
-
+    void showMissingBlocks() const;
+    bool checkIfWon() const;
     difficulty getDifficulty();
 
-    static void setGridSize(int gridSize);
+    static void setGridSize(const int gridSize);
 
     static int getGridSize();
     std::vector<Blocks*>* getBlocks();
