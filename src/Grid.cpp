@@ -79,7 +79,6 @@ void Grid::clear()
 
 bool Grid::checkIfPlaceable(Blocks* block) const
 {
-    block->updateRect();
     int x;
     int y;
     std::tie(x,y) = block->getNewCoords();
@@ -306,12 +305,6 @@ std::vector<Blocks *> *Grid::getNotPlacedBlocks()
 
 bool Grid::checkIfWon() const
 {
-    for (auto& iterator : m_grid)
-    {
-        if (iterator == nullptr)
-        {
-            return false;
-        }
-    }
-    return true;
+    return std::ranges::none_of(m_grid.cbegin(), m_grid.cend(),
+                                [](Blocks *block) { return block == nullptr; });
 }

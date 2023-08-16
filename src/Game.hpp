@@ -15,11 +15,6 @@ public:
     Blocks *findSelectedBlock(const std::vector<Blocks *> *blocks)const;
     void rotateSelectedBlock();
     void run(Grid *grid);
-
-    bool getQuit(){
-        return m_quit;
-    }
-
 protected:
 private:
     bool m_quit;
@@ -28,5 +23,4 @@ private:
     SDL_Point m_clickOffset;
     SDL_Rect *m_selectedRect;
     Blocks *m_selectedBlock;
-    Renderer m_renderer{};
 };

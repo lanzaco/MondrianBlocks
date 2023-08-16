@@ -1,8 +1,5 @@
 #include <SDL.h>
-#include "Game.hpp"
 #include "UserInterface.hpp"
-#include "FileHandler.hpp"
-#include "Solver.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -10,10 +7,6 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
 
-    FileHandler file;
-    Solver solver{};
-    solver.solve(*file.readFile("./../../data/data_file.txt").front());
-
-    //UserInterface::showMenu();
+    UserInterface::showMenu();
     return 0;
 }

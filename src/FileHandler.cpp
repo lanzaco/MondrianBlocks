@@ -13,9 +13,8 @@ std::vector<int> splitStreamIntoVec(std::string line);
 
 std::vector<Grid *> FileHandler::readFile(const std::string& filePath)
 {
-    int gridSize = 0;
+    int gridSize;
     std::ifstream input_stream(filePath);
-    //std::ifstream input_stream("filePath");
 
     if (!input_stream)
     {

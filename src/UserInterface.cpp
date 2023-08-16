@@ -62,7 +62,7 @@ Grid* UserInterface::chooseGrid() {
     Renderer::init();
     int counter{0};
     FileHandler fileHandler{};
-    std::vector<Grid*> grids = fileHandler.readFile();
+    std::vector<Grid *> grids = fileHandler.readFile("./../../data/data_file.txt");
 
     if (grids.empty()) return nullptr;
 
