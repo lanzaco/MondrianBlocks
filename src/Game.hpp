@@ -2,6 +2,7 @@
 
 #include "Renderer.hpp"
 #include "Grid.hpp"
+#include "UserInterface.hpp"
 
 class Game
 {

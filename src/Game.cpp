@@ -196,9 +196,9 @@ void Game::run(Grid *grid)
         }
         if (grid->checkIfWon())
         {
+            UserInterface::wonGame();
             m_quit = true;
         }
-
         SDL_RenderPresent(Renderer::m_renderer);
     }
     Renderer::end();

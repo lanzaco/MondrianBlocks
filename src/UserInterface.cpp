@@ -54,7 +54,8 @@ void UserInterface::showMenu()
     }
 }
 
-Grid* UserInterface::chooseGrid() {
+Grid* UserInterface::chooseGrid()
+{
 
     bool quit{false};
     SDL_Event event;
@@ -62,7 +63,7 @@ Grid* UserInterface::chooseGrid() {
     Renderer::init();
     int counter{0};
     FileHandler fileHandler{};
-    std::vector<Grid *> grids = fileHandler.readFile("./../../data/data_file.txt");
+    std::vector<Grid*> grids = fileHandler.readFile();
 
     if (grids.empty()) return nullptr;
 
@@ -112,4 +113,24 @@ Grid* UserInterface::chooseGrid() {
         SDL_RenderPresent(Renderer::m_renderer);
     }
     return nullptr;
+}
+
+void UserInterface::wonGame()
+{
+    bool quit{false};
+    SDL_Event event;
+    SDL_Point mousePosition{0};
+    Renderer::init();
+
+    while (!quit)
+    {
+        SDL_PollEvent(&event);
+        if (event.type == SDL_QUIT)
+        {
+            quit = true;
+        }
+        Renderer::fillBackground(BACKGROUND_COLOR);
+        Renderer::drawText("You won", TOP_MIDDLE, BLACK);
+        SDL_RenderPresent(Renderer::m_renderer);
+    }
 }
