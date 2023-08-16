@@ -63,8 +63,8 @@ bool Solver::tryToPlaceAllBlocks()
     while(!m_grid.getNotPlacedBlocks()->empty())
     {
         Blocks* currentBlock = m_grid.getNotPlacedBlocks()->at(0);
-        int notPlaceableX; //= getLastXCoordinate(currentBlock);
-        int notPlaceableY; //= getLastYCoordinate(currentBlock);
+        int notPlaceableX;
+        int notPlaceableY;
         std::tie(notPlaceableX, notPlaceableY) = lastCoordinates(currentBlock->getX(), currentBlock->getY());
         bool lastRotation = currentBlock->getIsRotated();
         int xCoordinate = 0; //currentBlock->getX();
