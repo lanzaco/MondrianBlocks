@@ -123,7 +123,8 @@ void Renderer::drawTriangle(float x, float y, float width, float height,
 {
     std::vector<SDL_Vertex> triangle;
     triangle.clear();
-    switch (orientation) {
+    switch (orientation)
+    {
 
         case UP:
             triangle.push_back({SDL_FPoint{x + width/2, y}, BLACK, SDL_FPoint{0}});
@@ -150,7 +151,8 @@ void Renderer::drawTriangle(float x, float y, float width, float height,
     SDL_RenderGeometry( Renderer::m_renderer, nullptr, triangle.data(), static_cast<int>(triangle.size()), nullptr, 0 );
 }
 
-SDL_Rect Renderer::drawText(const std::string& text, alignment alignment, SDL_Color color, int x, int y) {
+SDL_Rect Renderer::drawText(const std::string& text, alignment alignment, SDL_Color color, int x, int y)
+{
     int windowWidth;
     int windowHeight;
     SDL_Window* window = Renderer::m_window;
@@ -161,7 +163,8 @@ SDL_Rect Renderer::drawText(const std::string& text, alignment alignment, SDL_Co
     int textWidth = surfaceMessage->w;
     int textHeight = surfaceMessage->h;
 
-    switch (alignment) {
+    switch (alignment)
+    {
 
         case TOP_LEFT:
             break;

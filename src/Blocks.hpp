@@ -7,6 +7,7 @@ class Blocks
 
 public:
     Blocks(int x, int y, int sizeX, int sizeY, SDL_Color color, bool isRotated = false);
+    Blocks() = default;
     ~Blocks() = default;
     int getX() const;
     int getY() const;
@@ -15,10 +16,12 @@ public:
     bool getIsRotated() const;
     SDL_Color getColor() const;
     SDL_Rect* getRect();
+
     void updateRect();
     std::pair<int, int> getNewCoords();
     void setX(int x);
     void setY(int y);
+    void setRotate(bool rotation);
     void rotate();
 
 private:

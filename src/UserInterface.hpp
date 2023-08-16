@@ -6,4 +6,6 @@ class UserInterface {
 public:
     static void showMenu();
     static Grid* chooseGrid();
+    static Grid *generateGrid();
+    static void wonGame();
 };

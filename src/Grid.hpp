@@ -2,6 +2,13 @@
 #include "Blocks.hpp"
 #include <vector>
 
+enum class difficulty {
+    easy,
+    medium,
+    hard,
+    impossible,
+};
+
 class Grid
 {
 
@@ -18,15 +25,17 @@ public:
     void draw() const;
     void drawPreview();
     void moveBlock(Blocks* block);
-    void showMissingBlocks()const;
-    bool checkIfWon()const;
+    void showMissingBlocks() const;
+    bool checkIfWon() const;
+    difficulty getDifficulty();
 
-    static void setGridSize(int gridSize);
+    static void setGridSize(const int gridSize);
 
     static int getGridSize();
     std::vector<Blocks*>* getBlocks();
     std::vector<SDL_Rect*>* getRectangles();
     std::vector<Blocks*>* getNotPlacedBlocks();
+    std::vector<Blocks*>* getGrid();
 
     static int m_counter;
     static int m_gridSize;

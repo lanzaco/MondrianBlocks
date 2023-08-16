@@ -2,12 +2,10 @@
 #include "SDL.h"
 
 //Needed to make it work with SDL
-int main(int arc, char* argv[])
+int main(int argc, char* argv[])
 {
-    return 0;
-}
+    ::testing::InitGoogleTest(&argc, argv);
+    (void) RUN_ALL_TESTS();
 
-TEST(Tests, BasicAssertion)
-{
-    ASSERT_EQ(3*4, 12);
+    return 0;
 }

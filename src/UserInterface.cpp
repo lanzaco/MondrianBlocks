@@ -4,9 +4,11 @@
 #include "Game.hpp"
 #include "FileHandler.hpp"
 #include "Defines.hpp"
+#include "Solver.hpp"
 
 #include <SDL.h>
 #include <vector>
+#include <random>
 
 void UserInterface::showMenu()
 {
@@ -46,7 +48,9 @@ void UserInterface::showMenu()
             }
             if (SDL_PointInRect(&mousePosition, &rectSolve))
             {
-                //TODO: Run solver
+                Grid grid{*chooseGrid()};
+                Solver solver;
+                Grid solvedGrid = solver.recursiveSolver(grid);
                 quit = true;
             }
         }
@@ -54,7 +58,8 @@ void UserInterface::showMenu()
     }
 }
 
-Grid* UserInterface::chooseGrid() {
+Grid* UserInterface::chooseGrid()
+{
 
     bool quit{false};
     SDL_Event event;
@@ -62,7 +67,7 @@ Grid* UserInterface::chooseGrid() {
     Renderer::init();
     int counter{0};
     FileHandler fileHandler{};
-    std::vector<Grid*> grids = fileHandler.readFile();
+    std::vector<Grid *> grids = fileHandler.readFile("./../../data/data_file.txt");
 
     if (grids.empty()) return nullptr;
 
@@ -89,6 +94,7 @@ Grid* UserInterface::chooseGrid() {
         SDL_Rect leftTriangle{GRID_MARGIN, y/2,static_cast<int>(maxSize),static_cast<int>(maxSize)};
         SDL_Rect rightTriangle{x-GRID_MARGIN-static_cast<int>(maxSize),y/2, static_cast<int>(maxSize),static_cast<int>(maxSize)};
         SDL_Rect rectChoose = Renderer::drawText("Choose Grid", BOTTOM_RIGHT,BLACK, 20,0);
+        SDL_Rect generateNewGrid = Renderer::drawText("Generate new Grid", BOTTOM_MIDDLE, BLACK);
 
         if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
         {
@@ -106,10 +112,68 @@ Grid* UserInterface::chooseGrid() {
             {
                 return grids.at(counter);
             }
+            if (SDL_PointInRect(&mousePosition, &generateNewGrid)) {
+                //grids.push_back(generateGrid());
+                //counter = grids.size() - 1;
+            }
         }
 
         grids.at(counter)->drawPreview();
         SDL_RenderPresent(Renderer::m_renderer);
     }
     return nullptr;
+}
+
+void UserInterface::wonGame()
+{
+    bool quit{false};
+    SDL_Event event;
+    SDL_Point mousePosition{0};
+    Renderer::init();
+
+    while (!quit)
+    {
+        SDL_PollEvent(&event);
+        if (event.type == SDL_QUIT)
+        {
+            quit = true;
+        }
+        Renderer::fillBackground(BACKGROUND_COLOR);
+        Renderer::drawText("You won", TOP_MIDDLE, BLACK);
+        SDL_RenderPresent(Renderer::m_renderer);
+    }
+}
+
+
+Grid *UserInterface::generateGrid() {
+    Grid *grid = new Grid;
+    Solver solver;
+    Grid solvedGrid;
+    std::random_device device;
+    std::mt19937 generator(device());
+    std::uniform_int_distribution<int> distribution(0, 7);
+    std::uniform_int_distribution<int> rotation(0, 1);
+
+    do {
+        Grid tmpGrid{};
+        auto notPlacedBlocks = tmpGrid.getNotPlacedBlocks();
+        Blocks *currentBlock = notPlacedBlocks->at(0);
+        SDL_Color currentColor = currentBlock->getColor();
+        if (currentColor.r == BLACK.r && currentColor.g == BLACK.g && currentColor.b == BLACK.b &&
+            currentColor.a == BLACK.a) {
+            do {
+                int xCoordinate = distribution(generator);
+                int yCoordinate = distribution(generator);
+                int rotated = rotation(generator);
+                currentBlock->setX(xCoordinate);
+                currentBlock->setY(yCoordinate);
+                currentBlock->setRotate(rotated);
+                currentBlock->updateRect();
+            } while (!(tmpGrid.checkIfPlaceable(currentBlock)));
+            tmpGrid.placeBlock(currentBlock);
+        }
+        solvedGrid = solver.recursiveSolver(tmpGrid);
+        *grid = tmpGrid;
+    } while (!(solvedGrid.checkIfWon()));
+    return grid;
 }

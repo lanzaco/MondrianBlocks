@@ -45,7 +45,8 @@ SDL_Rect* Blocks::getRect()
     return &m_rect;
 }
 
-void Blocks::updateRect() {
+void Blocks::updateRect()
+{
     int width = Renderer::m_maxSizePerSquare * m_sizeX - GRID_MARGIN;
     int height = Renderer::m_maxSizePerSquare * m_sizeY - GRID_MARGIN;
 
@@ -61,7 +62,8 @@ void Blocks::updateRect() {
     m_rect = rect;
 }
 
-std::pair<int, int> Blocks::getNewCoords() {
+std::pair<int, int> Blocks::getNewCoords()
+{
     float fx = static_cast<float>(getRect()->x - GRID_BORDER) / static_cast<float>(Renderer::m_maxSizePerSquare);
     float fy = static_cast<float>(getRect()->y - GRID_BORDER) / static_cast<float>(Renderer::m_maxSizePerSquare);
 
@@ -79,11 +81,17 @@ void Blocks::setY(int y) {
     m_y = y;
 }
 
-void Blocks::rotate() {
+void Blocks::rotate()
+{
     m_isRotated = !m_isRotated;
     int x = m_rect.x;
     int y = m_rect.y;
     int height = m_rect.h;
     int width = m_rect.w;
     m_rect = {x,y,height,width};
+}
+
+void Blocks::setRotate(bool rotation)
+{
+    m_isRotated = rotation;
 }

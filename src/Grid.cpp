@@ -15,6 +15,9 @@ int Grid::m_counter = 0;
 Grid::Grid()
 {
     clear();
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 1, BLACK, false));
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 2, BLACK, false));
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 3, BLACK, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 5, RED, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 4, RED, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 3, RED, false));
@@ -23,9 +26,6 @@ Grid::Grid()
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 4, BLUE, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 5, BLUE, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 3, 4, YELLOW, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 1, BLACK, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 2, BLACK, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 3, BLACK, false));
 }
 
 Grid::Grid(std::vector<Blocks *> grid)
@@ -63,7 +63,7 @@ Grid::Grid(std::vector<Blocks *> grid)
     updateRectangles();
 }
 
-void Grid::setGridSize(int gridSize)
+void Grid::setGridSize(const int gridSize)
 {
     m_gridSize = gridSize;
 }
@@ -77,7 +77,7 @@ void Grid::clear()
     }
 }
 
-bool Grid::checkIfPlaceable(Blocks* block)const
+bool Grid::checkIfPlaceable(Blocks* block) const
 {
     int x;
     int y;
@@ -90,6 +90,11 @@ bool Grid::checkIfPlaceable(Blocks* block)const
         int tmp = sizeX;
         sizeX = sizeY;
         sizeY = tmp;
+    }
+
+    if((x + sizeX > 8) || (y + sizeY > 8))
+    {
+        return false;
     }
 
     if (x < 0 || y < 0 || x + sizeX > m_gridSize || y + sizeY > m_gridSize) return false;
@@ -123,15 +128,13 @@ void Grid::placeBlock(Blocks* block)
         sizeY = tmp;
     }
 
-    for (auto currentBlock : m_notPlacedBlocks) {
-        if (currentBlock == block)
-        {
-            auto new_end = std::remove(m_notPlacedBlocks.begin(), m_notPlacedBlocks.end(), block);
-            m_notPlacedBlocks.erase(new_end, m_notPlacedBlocks.end());
+    auto new_end = std::remove(m_notPlacedBlocks.begin(), m_notPlacedBlocks.end(), block);
+    m_notPlacedBlocks.erase(new_end, m_notPlacedBlocks.end());
 
-            m_rects.push_back(block->getRect());
-            m_blocks.push_back(block);
-        }
+    if(!gridContainsBlock(block))
+    {
+        m_rects.push_back(block->getRect());
+        m_blocks.push_back(block);
     }
 
     for (auto& currentBlock : m_grid)
@@ -150,27 +153,16 @@ void Grid::placeBlock(Blocks* block)
     }
     block->setX(x);
     block->setY(y);
+    block->updateRect();
 }
 
 void Grid::removeBlock(Blocks* block)
 {
-    int x = block->getX();
-    int y = block->getY();
-    int sizeX = block->getSizeX();
-    int sizeY = block->getSizeY();
-
-    if (block->getIsRotated())
+    for (auto& currentBlock : m_grid)
     {
-        int tmp = sizeX;
-        sizeX = sizeY;
-        sizeY = tmp;
-    }
-
-    for (int i = y; i < y + sizeY; ++i)
-    {
-        for (int j = x; j < x + sizeX; ++j)
+        if (currentBlock == block)
         {
-            m_grid.at(i * m_gridSize + j) = nullptr;
+            currentBlock = nullptr;
         }
     }
 
@@ -178,6 +170,7 @@ void Grid::removeBlock(Blocks* block)
     m_blocks.erase(new_end, m_blocks.end());
 
     m_notPlacedBlocks.push_back(block);
+    block->updateRect();
 }
 
 int Grid::getGridSize()
@@ -195,53 +188,74 @@ std::vector<SDL_Rect *> *Grid::getRectangles()
     return &m_rects;
 }
 
-void Grid::updateRectangles() {
+std::vector<Blocks *> *Grid::getGrid()
+{
+    return &m_grid;
+}
+
+void Grid::updateRectangles()
+{
     for (auto currentBlock : m_blocks)
     {
         currentBlock->updateRect();
     }
 }
 
-void Grid::draw()const {
+void Grid::draw() const
+{
     int maxSize = Renderer::m_maxSizePerSquare;
     int border = GRID_BORDER;
     int margin = GRID_MARGIN;
-    for (int i = 0; i < m_gridSize; ++i) {
-        for (int j = 0; j < m_gridSize; ++j) {
+    for (int i = 0; i < m_gridSize; ++i)
+    {
+        for (int j = 0; j < m_gridSize; ++j)
+        {
             Renderer::drawRect({maxSize * j + border, maxSize * i + border,
                                 maxSize - margin, maxSize - margin},WHITE);
         }
     }
 
-    for (auto currentBlock : m_blocks) {
+    for (auto currentBlock : m_blocks)
+    {
         Renderer::drawRectWithBoarder(currentBlock);
     }
 }
 
-void Grid::drawPreview() {
+void Grid::drawPreview()
+{
     int x;
     int y;
     SDL_GetWindowSize(Renderer::m_window, &x, &y);
 
-    int maxSize = std::min(x,y)/(2 * m_gridSize);
+    int maxSize = std::min(x,y) / (2 * m_gridSize);
     int margin = GRID_MARGIN;
-    int xOffset = (x/2 - (maxSize * m_gridSize)/2);
-    int yOffset = (y/2 - (maxSize * m_gridSize)/2);
-    for (int i = 0; i < m_gridSize; ++i) {
-        for (int j = 0; j < m_gridSize; ++j) {
+    int xOffset = (x / 2 - (maxSize * m_gridSize) / 2);
+    int yOffset = (y / 2 - (maxSize * m_gridSize) / 2);
+    for (int i = 0; i < m_gridSize; ++i)
+    {
+        for (int j = 0; j < m_gridSize; ++j)
+        {
             Renderer::drawRect({maxSize * j + xOffset, maxSize * i + yOffset,
                                 maxSize - margin, maxSize - margin},WHITE);
         }
     }
 
-    for (auto currentBlock : m_blocks) {
-        SDL_Rect previewRect = {currentBlock->getX() * maxSize + xOffset, currentBlock->getY() * maxSize + yOffset, currentBlock->getSizeX() * maxSize - margin, currentBlock->getSizeY() * maxSize - margin};
+    for (auto currentBlock : m_blocks)
+    {
+        SDL_Rect previewRect = {currentBlock->getX() * maxSize + xOffset,
+                                currentBlock->getY() * maxSize + yOffset,
+                                currentBlock->getSizeX() * maxSize - margin,
+                                currentBlock->getSizeY() * maxSize - margin};
         Renderer::drawRectWithBoarder(previewRect, currentBlock->getColor());
     }
-
+    difficulty difficulty = getDifficulty();
+    if (difficulty == difficulty::easy) Renderer::drawText("Easy", BOTTOM_LEFT, BLACK);
+    if (difficulty == difficulty::medium) Renderer::drawText("Medium", BOTTOM_LEFT, BLACK);
+    if (difficulty == difficulty::hard) Renderer::drawText("Hard", BOTTOM_LEFT, BLACK);
 }
 
-void Grid::moveBlock(Blocks* block) {
+void Grid::moveBlock(Blocks* block)
+{
     if (checkIfPlaceable(block))
     {
         placeBlock(block);
@@ -262,7 +276,8 @@ void Grid::moveBlock(Blocks* block) {
     block->updateRect();
 }
 
-void Grid::showMissingBlocks()const {
+void Grid::showMissingBlocks() const
+{
     int width = 100;
     int height = 100;
     int x;
@@ -272,9 +287,11 @@ void Grid::showMissingBlocks()const {
     int distance = (Grid::m_gridSize * Renderer::m_maxSizePerSquare) + 2 * GRID_MARGIN;
     int sizeBox = (Renderer::m_maxSizePerSquare * 5) + 2 * GRID_MARGIN;
 
-    Renderer::drawTriangle(static_cast<float>(distance), static_cast<float>(y) / 2, static_cast<float>(width),
+    Renderer::drawTriangle(static_cast<float>(distance), static_cast<float>(y) / 2,
+                           static_cast<float>(width),
                            static_cast<float>(height), LEFT);
-    Renderer::drawTriangle(static_cast<float>(distance + sizeBox), static_cast<float>(y) / 2, static_cast<float>(width),
+    Renderer::drawTriangle(static_cast<float>(distance + sizeBox), static_cast<float>(y) / 2,
+                           static_cast<float>(width),
                            static_cast<float>(height), RIGHT);
 
     if (m_counter < 0) m_counter = static_cast<int>(m_notPlacedBlocks.size()) - 1;
@@ -288,27 +305,74 @@ void Grid::showMissingBlocks()const {
     }
 }
 
-std::vector<Blocks *> *Grid::getNotPlacedBlocks() {
+std::vector<Blocks *> *Grid::getNotPlacedBlocks()
+{
     return &m_notPlacedBlocks;
 }
 
-bool Grid::checkIfWon()const
+bool Grid::checkIfWon() const
 {
-    
-    if (!m_notPlacedBlocks.empty())
-    {
-        return false;
-    }
+    return std::ranges::none_of(m_grid.cbegin(), m_grid.cend(),
+                                [](Blocks *block) { return block == nullptr; });
+}
 
- 
-    for (int i = 0; i < m_gridSize * m_gridSize; ++i)
-    {
-        if (m_grid.at(i) == nullptr)
-        {
-            return false;
-        }
-    }
+int checkSurrounding(Blocks block1, Blocks block2) {
+    int counter = 0;
+    int x1 = block1.getX();
+    int y1 = block1.getY();
+    int x2 = block2.getX();
+    int y2 = block2.getY();
+    int sizeX1 = block1.getSizeX();
+    int sizeY1 = block1.getSizeY();
+    int sizeX2 = block2.getSizeX();
+    int sizeY2 = block2.getSizeY();
+    int distanceX = abs((x1 + sizeX1) - (x2 + sizeX2));
+    int distanceY = abs((y1 + sizeY1) - (y2 + sizeY2));
 
-   
-    return true;
+    if (distanceY < std::max(sizeY1, sizeY2) && distanceX == 2) counter++;
+    if (distanceX < std::max(sizeX1, sizeX2) && distanceY == 2) counter++;
+
+    return counter;
+}
+
+int checkBoarder(Blocks block, int gridSize) {
+    int counter = 0;
+    int x = block.getX();
+    int y = block.getY();
+    int sizeX = block.getSizeX();
+    int sizeY = block.getSizeY();
+
+    if (x == 1 && y == 1) counter += 2;
+    else if (x == 1 || y == 1) ++counter;
+    if (x + sizeX == gridSize - 1 && y + sizeY == gridSize - 1) counter += 2;
+    else if (x + sizeX == gridSize - 1 || y + sizeY == gridSize - 1) ++counter;
+    return counter;
+}
+
+difficulty Grid::getDifficulty() {
+    int difficultyAsInt = 0;
+    Blocks *block1 = m_blocks.at(0);
+    Blocks *block2 = m_blocks.at(1);
+    Blocks *block3 = m_blocks.at(2);
+
+    difficultyAsInt += checkSurrounding(*block1, *block2);
+    difficultyAsInt += checkSurrounding(*block1, *block3);
+    difficultyAsInt += checkSurrounding(*block3, *block2);
+
+    difficultyAsInt += checkBoarder(*block1, m_gridSize);
+    difficultyAsInt += checkBoarder(*block2, m_gridSize);
+    difficultyAsInt += checkBoarder(*block3, m_gridSize);
+
+    if (difficultyAsInt == 0) return difficulty::hard;
+    if (difficultyAsInt == 1) return difficulty::medium;
+    if (difficultyAsInt == 2) return difficulty::easy;
+    return difficulty::impossible;
+}
+
+
+
+bool Grid::gridContainsBlock(const Blocks *block) const
+{
+    return std::ranges::any_of(m_grid.cbegin(), m_grid.cend(),
+                               [block](Blocks *currentBlock){return currentBlock == block;});
 }

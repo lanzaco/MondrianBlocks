@@ -2,6 +2,7 @@
 
 #include "Renderer.hpp"
 #include "Grid.hpp"
+#include "UserInterface.hpp"
 
 class Game
 {
@@ -15,7 +16,6 @@ public:
     Blocks *findSelectedBlock(const std::vector<Blocks *> *blocks)const;
     void rotateSelectedBlock();
     void run(Grid *grid);
-
 protected:
 private:
     bool m_quit;
@@ -24,5 +24,4 @@ private:
     SDL_Point m_clickOffset;
     SDL_Rect *m_selectedRect;
     Blocks *m_selectedBlock;
-    Renderer m_renderer{};
 };
