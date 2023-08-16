@@ -200,3 +200,68 @@ void Solver::setSolverGrid(Grid grid)
 {
     m_grid = grid;
 }
+
+/*Grid Solver::recursiveSolver(Grid grid)
+{
+    if (grid.getNotPlacedBlocks()->empty()) return grid;
+    Blocks* currentBlock = grid.getNotPlacedBlocks()->front();
+    Grid newGrid;
+    for (int i = 0; i < Grid::getGridSize(); ++i) {
+        for (int j = 0; j < Grid::getGridSize(); ++j) {
+            for (int k = 0; k < 2; ++k) {
+                currentBlock->setX(j);
+                currentBlock->setY(i);
+                if(k == 1) currentBlock->setRotate(true);
+                else currentBlock->setRotate(false);
+                currentBlock->updateRect();
+                if (grid.checkIfPlaceable(currentBlock)) {
+                    grid.placeBlock(currentBlock);
+                    if (grid.checkIfWon())
+                    {
+                        return grid;
+                    }
+                    newGrid = recursiveSolver(grid);
+                    if (newGrid.checkIfWon())
+                    {
+                        return newGrid;
+                    }
+                }
+            }
+        }
+    }
+    return grid;
+}*/
+
+Grid Solver::recursiveSolver(Grid grid) {
+    if (grid.getNotPlacedBlocks()->empty()) return grid;
+    Blocks *currentBlock = grid.getNotPlacedBlocks()->front();
+    Grid newGrid;
+    int width = currentBlock->getSizeX();
+    int height = currentBlock->getSizeY();
+    for (int rotation = 0; rotation < 2; ++rotation) {
+        if (rotation == 1) {
+            currentBlock->setRotate(true);
+            int tmp = width;
+            width = height;
+            height = tmp;
+        } else currentBlock->setRotate(false);
+        for (int yIterator = 0; yIterator <= Grid::getGridSize() - height; ++yIterator) {
+            currentBlock->setY(yIterator);
+            for (int xIterator = 0; xIterator <= Grid::getGridSize() - width; ++xIterator) {
+                currentBlock->setX(xIterator);
+                currentBlock->updateRect();
+                if (grid.checkIfPlaceable(currentBlock)) {
+                    grid.placeBlock(currentBlock);
+                    if (grid.checkIfWon()) {
+                        return grid;
+                    }
+                    newGrid = recursiveSolver(grid);
+                    if (newGrid.checkIfWon()) {
+                        return newGrid;
+                    }
+                }
+            }
+        }
+    }
+    return grid;
+}

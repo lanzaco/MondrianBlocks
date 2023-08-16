@@ -15,6 +15,9 @@ int Grid::m_counter = 0;
 Grid::Grid()
 {
     clear();
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 1, BLACK, false));
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 2, BLACK, false));
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 3, BLACK, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 5, RED, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 4, RED, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 3, RED, false));
@@ -23,9 +26,6 @@ Grid::Grid()
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 4, BLUE, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 5, BLUE, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 3, 4, YELLOW, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 1, BLACK, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 2, BLACK, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 3, BLACK, false));
 }
 
 Grid::Grid(std::vector<Blocks *> grid)
@@ -245,6 +245,10 @@ void Grid::drawPreview()
                                 currentBlock->getSizeY() * maxSize - margin};
         Renderer::drawRectWithBoarder(previewRect, currentBlock->getColor());
     }
+    difficulty difficulty = getDifficulty();
+    if (difficulty == difficulty::easy) Renderer::drawText("Easy", BOTTOM_LEFT, BLACK);
+    if (difficulty == difficulty::medium) Renderer::drawText("Medium", BOTTOM_LEFT, BLACK);
+    if (difficulty == difficulty::hard) Renderer::drawText("Hard", BOTTOM_LEFT, BLACK);
 }
 
 void Grid::moveBlock(Blocks* block)
@@ -308,3 +312,57 @@ bool Grid::checkIfWon() const
     return std::ranges::none_of(m_grid.cbegin(), m_grid.cend(),
                                 [](Blocks *block) { return block == nullptr; });
 }
+
+int checkSurrounding(Blocks block1, Blocks block2) {
+    int counter = 0;
+    int x1 = block1.getX();
+    int y1 = block1.getY();
+    int x2 = block2.getX();
+    int y2 = block2.getY();
+    int sizeX1 = block1.getSizeX();
+    int sizeY1 = block1.getSizeY();
+    int sizeX2 = block2.getSizeX();
+    int sizeY2 = block2.getSizeY();
+    int distanceX = abs((x1 + sizeX1) - (x2 + sizeX2));
+    int distanceY = abs((y1 + sizeY1) - (y2 + sizeY2));
+
+    if (distanceY < std::max(sizeY1, sizeY2) && distanceX == 2) counter++;
+    if (distanceX < std::max(sizeX1, sizeX2) && distanceY == 2) counter++;
+
+    return counter;
+}
+
+int checkBoarder(Blocks block, int gridSize) {
+    int counter = 0;
+    int x = block.getX();
+    int y = block.getY();
+    int sizeX = block.getSizeX();
+    int sizeY = block.getSizeY();
+
+    if (x == 1 && y == 1) counter += 2;
+    else if (x == 1 || y == 1) ++counter;
+    if (x + sizeX == gridSize - 1 && y + sizeY == gridSize - 1) counter += 2;
+    else if (x + sizeX == gridSize - 1 || y + sizeY == gridSize - 1) ++counter;
+    return counter;
+}
+
+difficulty Grid::getDifficulty() {
+    int difficultyAsInt = 0;
+    Blocks *block1 = m_blocks.at(0);
+    Blocks *block2 = m_blocks.at(1);
+    Blocks *block3 = m_blocks.at(2);
+
+    difficultyAsInt += checkSurrounding(*block1, *block2);
+    difficultyAsInt += checkSurrounding(*block1, *block3);
+    difficultyAsInt += checkSurrounding(*block3, *block2);
+
+    difficultyAsInt += checkBoarder(*block1, m_gridSize);
+    difficultyAsInt += checkBoarder(*block2, m_gridSize);
+    difficultyAsInt += checkBoarder(*block3, m_gridSize);
+
+    if (difficultyAsInt == 0) return difficulty::hard;
+    if (difficultyAsInt == 1) return difficulty::medium;
+    if (difficultyAsInt == 2) return difficulty::easy;
+    return difficulty::impossible;
+}
+

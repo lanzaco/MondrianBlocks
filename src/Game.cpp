@@ -196,6 +196,7 @@ void Game::run(Grid *grid)
         }
         if (grid->checkIfWon())
         {
+
             m_quit = true;
         }
 
