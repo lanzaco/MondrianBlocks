@@ -16,6 +16,10 @@ public:
     void rotateSelectedBlock();
     void run(Grid *grid);
 
+    bool getQuit(){
+        return m_quit;
+    }
+
 protected:
 private:
     bool m_quit;

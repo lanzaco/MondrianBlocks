@@ -68,7 +68,7 @@ void Game::selectNotPlacedBlockWithMouse(const std::vector<Blocks *> &notPlacedB
     }
 }
 
-void Game::handleTriangleClick()const
+void Game::handleTriangleClick() const
 {
     int x;
     int y;
@@ -91,7 +91,7 @@ void Game::handleTriangleClick()const
     }
 }
 
-Blocks *Game::findSelectedBlock(const std::vector<Blocks *> *blocks)const
+Blocks *Game::findSelectedBlock(const std::vector<Blocks *> *blocks) const
 {
     for (auto currentBlock : *blocks)
     {

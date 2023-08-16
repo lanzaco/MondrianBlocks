@@ -1,6 +1,3 @@
-//
-// Created by Annika Jung on 31.07.23.
-//
 
 #include "FileHandler.hpp"
 #include "Colors.hpp"
@@ -14,15 +11,15 @@
 Blocks *newBlock(std::vector<int> vecBlockCoordinate, int startIndex);
 std::vector<int> splitStreamIntoVec(std::string line);
 
-std::vector<Grid *> FileHandler::readFile()
+std::vector<Grid *> FileHandler::readFile(const std::string& filePath)
 {
     int gridSize = 0;
-    std::ifstream input_stream("./../../data/data_file.txt");
+    std::ifstream input_stream(filePath);
+    //std::ifstream input_stream("filePath");
 
-      if (!input_stream)
+    if (!input_stream)
     {
         std::cerr << "Can't open input file!" << std::endl;
-        ;
     }
     else
     {
@@ -32,8 +29,8 @@ std::vector<Grid *> FileHandler::readFile()
             if (line.contains("Gridsize:"))
             {
                 gridSize = std::stoi(line.substr(line.find("Gridsize: ") + 10, 1));
+                Grid::setGridSize(gridSize);
             }
-            Grid::setGridSize(gridSize);
             if (line.contains("Grid:"))
             {
                 setMGrid(line);

@@ -79,6 +79,7 @@ void Grid::clear()
 
 bool Grid::checkIfPlaceable(Blocks* block) const
 {
+    block->updateRect();
     int x;
     int y;
     std::tie(x,y) = block->getNewCoords();
@@ -128,16 +129,11 @@ void Grid::placeBlock(Blocks* block)
         sizeY = tmp;
     }
 
-    for (auto currentBlock : m_notPlacedBlocks) {
-        if (currentBlock == block)
-        {
-            auto new_end = std::remove(m_notPlacedBlocks.begin(), m_notPlacedBlocks.end(), block);
-            m_notPlacedBlocks.erase(new_end, m_notPlacedBlocks.end());
+    auto new_end = std::remove(m_notPlacedBlocks.begin(), m_notPlacedBlocks.end(), block);
+    m_notPlacedBlocks.erase(new_end, m_notPlacedBlocks.end());
 
-            m_rects.push_back(block->getRect());
-            m_blocks.push_back(block);
-        }
-    }
+    m_rects.push_back(block->getRect());
+    m_blocks.push_back(block);
 
     for (auto& currentBlock : m_grid)
     {
