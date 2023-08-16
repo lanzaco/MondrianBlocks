@@ -18,10 +18,10 @@ public:
     void draw() const;
     void drawPreview();
     void moveBlock(Blocks* block);
-    void showMissingBlocks()const;
-    bool checkIfWon()const;
-
-    static void setGridSize(int gridSize);
+    void showMissingBlocks() const;
+    bool checkIfWon() const;
+    bool gridContainsBlock(const Blocks* block) const;
+    static void setGridSize(const int gridSize);
 
     static int getGridSize();
     std::vector<Blocks*>* getBlocks();
