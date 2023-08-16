@@ -13,6 +13,8 @@ public:
     bool isSpotFree(const int xCoordinate, const int yCoordinate);
     void switchOrderOfNotPlacedBlocks();
 
+    Grid recursiveSolver(Grid grid);
+
     Grid* getSolverGrid();
     void setSolverGrid(Grid grid);
 

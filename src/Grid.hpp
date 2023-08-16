@@ -2,6 +2,13 @@
 #include "Blocks.hpp"
 #include <vector>
 
+enum class difficulty {
+    easy,
+    medium,
+    hard,
+    impossible,
+};
+
 class Grid
 {
 
@@ -20,7 +27,8 @@ public:
     void moveBlock(Blocks* block);
     void showMissingBlocks() const;
     bool checkIfWon() const;
-    bool gridContainsBlock(const Blocks* block) const;
+    difficulty getDifficulty();
+
     static void setGridSize(const int gridSize);
 
     static int getGridSize();
