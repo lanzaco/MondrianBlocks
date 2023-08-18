@@ -21,4 +21,13 @@ TEST_F(BlockClassTest, TestRotate)
     EXPECT_EQ(beforeRotation, !afterRotation);
 }
 
+TEST_F(BlockClassTest, AreHightAndWidthSwapped)
+{
+    int hightBeforeRotation = m_block.getRect()->h;
+    int widthBeforeRotation = m_block.getRect()->w;
+    m_block.rotate();
+    EXPECT_EQ(hightBeforeRotation, m_block.getRect()->w);
+    EXPECT_EQ(widthBeforeRotation, m_block.getRect()->h);
+}
+
 
