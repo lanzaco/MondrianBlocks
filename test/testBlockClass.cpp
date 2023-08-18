@@ -23,10 +23,10 @@ TEST_F(BlockClassTest, TestRotate)
 
 TEST_F(BlockClassTest, AreHightAndWidthSwapped)
 {
-    int hightBeforeRotation = m_block.getRect()->h;
+    int heightBeforeRotation = m_block.getRect()->h;
     int widthBeforeRotation = m_block.getRect()->w;
     m_block.rotate();
-    ASSERT_EQ(hightBeforeRotation, m_block.getRect()->w);
+    ASSERT_EQ(heightBeforeRotation, m_block.getRect()->w);
     ASSERT_EQ(widthBeforeRotation, m_block.getRect()->h);
 }
 

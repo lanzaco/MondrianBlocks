@@ -196,7 +196,7 @@ Grid* Solver::getSolverGrid()
     return &m_grid;
 }
 
-void Solver::setSolverGrid(Grid grid)
+void Solver::setSolverGrid(const Grid &grid)
 {
     m_grid = grid;
 }

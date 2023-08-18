@@ -10,13 +10,15 @@ public:
     Grid solve(Grid &grid);
     bool tryToPlaceAllBlocks();
     std::pair<int,int> findNextFreeSpot(const Blocks* currentBlock);
-    bool isSpotFree(const int xCoordinate, const int yCoordinate);
+
+    bool isSpotFree(int xCoordinate, int yCoordinate);
     void switchOrderOfNotPlacedBlocks();
 
     Grid recursiveSolver(Grid grid);
 
     Grid* getSolverGrid();
-    void setSolverGrid(Grid grid);
+
+    void setSolverGrid(const Grid &grid);
 
 protected:
 private:

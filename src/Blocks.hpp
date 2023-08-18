@@ -9,12 +9,18 @@ public:
     Blocks(int x, int y, int sizeX, int sizeY, SDL_Color color, bool isRotated = false);
     Blocks() = default;
     ~Blocks() = default;
-    int getX() const;
-    int getY() const;
-    int getSizeX() const;
-    int getSizeY() const;
-    bool getIsRotated() const;
-    SDL_Color getColor() const;
+
+    [[nodiscard]] int getX() const;
+
+    [[nodiscard]] int getY() const;
+
+    [[nodiscard]] int getSizeX() const;
+
+    [[nodiscard]] int getSizeY() const;
+
+    [[nodiscard]] bool getIsRotated() const;
+
+    [[nodiscard]] SDL_Color getColor() const;
     SDL_Rect* getRect();
 
     void updateRect();
