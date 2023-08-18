@@ -231,21 +231,27 @@ void Grid::drawPreview()
     int margin = GRID_MARGIN;
     int xOffset = (x / 2 - (maxSize * m_gridSize) / 2);
     int yOffset = (y / 2 - (maxSize * m_gridSize) / 2);
-    for (int i = 0; i < m_gridSize; ++i)
+    for (int yIterator = 0; yIterator < m_gridSize; ++yIterator)
     {
-        for (int j = 0; j < m_gridSize; ++j)
+        for (int xIterator = 0; xIterator < m_gridSize; ++xIterator)
         {
-            Renderer::drawRect({maxSize * j + xOffset, maxSize * i + yOffset,
+            Renderer::drawRect({maxSize * xIterator + xOffset, maxSize * yIterator + yOffset,
                                 maxSize - margin, maxSize - margin},WHITE);
         }
     }
 
     for (auto currentBlock : m_blocks)
     {
-        SDL_Rect previewRect = {currentBlock->getX() * maxSize + xOffset,
-                                currentBlock->getY() * maxSize + yOffset,
-                                currentBlock->getSizeX() * maxSize - margin,
-                                currentBlock->getSizeY() * maxSize - margin};
+        int xPosition = currentBlock->getX() * maxSize + xOffset;
+        int yPosition = currentBlock->getY() * maxSize + yOffset;
+        int width = currentBlock->getSizeX() * maxSize - margin;
+        int height = currentBlock->getSizeY() * maxSize - margin;
+        if (currentBlock->getIsRotated()) {
+            int tmp = width;
+            width = height;
+            height = tmp;
+        }
+        SDL_Rect previewRect = {xPosition, yPosition, width, height};
         Renderer::drawRectWithBoarder(previewRect, currentBlock->getColor());
     }
     difficulty difficulty = getDifficulty();
@@ -271,6 +277,7 @@ void Grid::moveBlock(Blocks* block)
         if (isOutOfGrid)
         {
             removeBlock(block);
+            block->setRotate(false);
         }
     }
     block->updateRect();

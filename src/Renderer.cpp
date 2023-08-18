@@ -147,8 +147,17 @@ void Renderer::drawTriangle(float x, float y, float width, float height,
             triangle.push_back({SDL_FPoint{x + width, y}, BLACK, SDL_FPoint{0}});
             break;
     }
-
+    SDL_SetRenderDrawColor(Renderer::m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+    SDL_Rect triangleRect{static_cast<int>(x), static_cast<int>(y), static_cast<int>(width), static_cast<int>(height)};
     SDL_RenderGeometry( Renderer::m_renderer, nullptr, triangle.data(), static_cast<int>(triangle.size()), nullptr, 0 );
+    SDL_RenderDrawRect(Renderer::m_renderer, &triangleRect);
+}
+
+SDL_Rect Renderer::drawButton(const std::string &text, alignment alignment, SDL_Color color, int x, int y) {
+    auto rectangle = drawText(text, alignment, color, x, y);
+    SDL_SetRenderDrawColor(Renderer::m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+    SDL_RenderDrawRect(Renderer::m_renderer, &rectangle);
+    return rectangle;
 }
 
 SDL_Rect Renderer::drawText(const std::string& text, alignment alignment, SDL_Color color, int x, int y)
