@@ -15,7 +15,7 @@ TEST_F(FileHandlerTest, TestSizeOfGridList)
 
 TEST_F(FileHandlerTest, TestSizeOfGridListEmptyFile)
 {
-    ASSERT_EQ(0,m_fileHandler.readFile("./../../empty_file.txt").size());
+    ASSERT_EQ(0, m_fileHandler.readFile("./../../data/empty_file.txt").size());
 }
 
 TEST_F(FileHandlerTest, TestGridSizeEmptyFile)
