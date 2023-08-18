@@ -18,7 +18,7 @@ TEST_F(BlockClassTest, TestRotate)
     bool beforeRotation = m_block.getIsRotated();
     m_block.rotate();
     bool afterRotation = m_block.getIsRotated();
-    EXPECT_EQ(beforeRotation, !afterRotation);
+    ASSERT_EQ(beforeRotation, !afterRotation);
 }
 
 TEST_F(BlockClassTest, AreHightAndWidthSwapped)
@@ -26,8 +26,20 @@ TEST_F(BlockClassTest, AreHightAndWidthSwapped)
     int hightBeforeRotation = m_block.getRect()->h;
     int widthBeforeRotation = m_block.getRect()->w;
     m_block.rotate();
-    EXPECT_EQ(hightBeforeRotation, m_block.getRect()->w);
-    EXPECT_EQ(widthBeforeRotation, m_block.getRect()->h);
+    ASSERT_EQ(hightBeforeRotation, m_block.getRect()->w);
+    ASSERT_EQ(widthBeforeRotation, m_block.getRect()->h);
+}
+
+TEST_F(BlockClassTest, GetNewCoords)
+{
+    int x;
+    int y;
+    m_block.setX(1);
+    m_block.setY(1);
+    m_block.updateRect();
+    std::tie(x, y) = m_block.getNewCoords();
+    ASSERT_EQ(x, 1);
+    ASSERT_EQ(y, 1);
 }
 
 
