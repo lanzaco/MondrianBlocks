@@ -28,6 +28,7 @@ public:
     void showMissingBlocks() const;
     bool checkIfWon() const;
     difficulty getDifficulty();
+    bool gridContainsBlock(const Blocks *block) const;
 
     static void setGridSize(const int gridSize);
 
