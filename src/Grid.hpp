@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Blocks.hpp"
+
 #include <vector>
 
 enum class difficulty {
@@ -26,10 +28,14 @@ public:
     void drawPreview();
     void moveBlock(Blocks* block);
     void showMissingBlocks() const;
-    bool checkIfWon() const;
-    difficulty getDifficulty();
 
-    static void setGridSize(const int gridSize);
+    void deleteHeap();
+
+    [[nodiscard]] bool checkIfWon() const;
+    difficulty getDifficulty();
+    bool gridContainsBlock(const Blocks *block) const;
+
+    static void setGridSize(int gridSize);
 
     static int getGridSize();
     std::vector<Blocks*>* getBlocks();

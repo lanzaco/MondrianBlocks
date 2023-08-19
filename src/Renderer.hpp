@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Blocks.hpp"
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <string>
-#include "Blocks.hpp"
 
 enum orientation
 {
@@ -39,6 +40,8 @@ public:
     static void windowSizeChanged();
     static void drawTriangle(float x, float y, float width, float height, orientation orientation);
     static SDL_Rect drawText(const std::string& text, alignment alignment, SDL_Color color, int x = 0, int y = 0);
+
+    static SDL_Rect drawButton(const std::string &text, alignment alignment, SDL_Color color, int x = 0, int y = 0);
 
     static SDL_Window* m_window;
     static SDL_Renderer* m_renderer;

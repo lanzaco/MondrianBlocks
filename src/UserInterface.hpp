@@ -7,5 +7,8 @@ public:
     static void showMenu();
     static Grid* chooseGrid();
     static Grid *generateGrid();
-    static void wonGame();
+
+    static bool wonGame();
+
+    static bool solverMenu(Grid *grid);
 };
