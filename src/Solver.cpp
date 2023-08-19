@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <iostream>
+#include <utility>
+#include <algorithm>
 
 constexpr int MAXROWS = 7;
 constexpr int MAXCOLUMN = 7;
@@ -210,21 +212,26 @@ Grid Solver::recursiveSolver(Grid grid)
     int sizeX = currentBlock->getSizeX() - 1;
     int sizeY = currentBlock->getSizeY() - 1;
 
-    for (int rotate = 0; (rotate < 2) && ((sizeX != sizeY) || (rotate == 0)); ++rotate) {
+    for (int rotate = 0; (rotate < 2) && ((sizeX != sizeY) || (rotate == 0)); ++rotate)
+    {
         if (rotate == 1) {
             currentBlock->setRotate(true);
             int tmp = sizeX;
             sizeX = sizeY;
             sizeY = tmp;
-        } else {
+        } else
+        {
             currentBlock->setRotate(false);
         }
-        for (int yIterator = 0; yIterator < Grid::getGridSize() - sizeY; ++yIterator) {
+        for (int yIterator = 0; yIterator < Grid::getGridSize() - sizeY; ++yIterator)
+        {
             currentBlock->setY(yIterator);
-            for (int xIterator = 0; xIterator < Grid::getGridSize() - sizeX; ++xIterator) {
+            for (int xIterator = 0; xIterator < Grid::getGridSize() - sizeX; ++xIterator)
+            {
                 currentBlock->setX(xIterator);
                 currentBlock->updateRect();
-                if (grid.checkIfPlaceable(currentBlock)) {
+                if (grid.checkIfPlaceable(currentBlock))
+                {
                     grid.placeBlock(currentBlock);
                     if (grid.getNotPlacedBlocks()->empty()) return grid;
                     Grid newGrid = recursiveSolver(grid);
@@ -234,4 +241,26 @@ Grid Solver::recursiveSolver(Grid grid)
         }
     }
     return grid;
+}
+
+void Solver::cleanUpGrid(Grid *grid)
+{
+    auto notPlacedBlocks = *grid->getNotPlacedBlocks();
+    for (auto currentBlock: notPlacedBlocks)
+    {
+        auto new_end = std::remove(notPlacedBlocks.begin(), notPlacedBlocks.end(), currentBlock);
+        notPlacedBlocks.erase(new_end, notPlacedBlocks.end());
+        notPlacedBlocks.emplace_back(currentBlock);
+        currentBlock->setRotate(false);
+        currentBlock->updateRect();
+    }
+
+    auto placedBlocks = *grid->getBlocks();
+    for (auto currentBlock: placedBlocks)
+    {
+        auto new_end = std::remove(placedBlocks.begin(), placedBlocks.end(), currentBlock);
+        placedBlocks.erase(new_end, placedBlocks.end());
+        placedBlocks.emplace_back(currentBlock);
+        currentBlock->updateRect();
+    }
 }

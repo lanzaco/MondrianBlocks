@@ -23,12 +23,15 @@ std::vector<Grid *> FileHandler::readFile(const std::string& filePath)
     }
 
     std::string line;
-    while (getline(input_stream, line)) {
-        if (line.contains("Gridsize:")) {
+    while (getline(input_stream, line))
+    {
+        if (line.contains("Gridsize:"))
+        {
             gridSize = std::stoi(line.substr(line.find("Gridsize: ") + 10, 1));
             Grid::setGridSize(gridSize);
         }
-        if (line.contains("Grid:")) {
+        if (line.contains("Grid:"))
+        {
             setMGrid(line);
         }
     }

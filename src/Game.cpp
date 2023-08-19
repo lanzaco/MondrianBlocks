@@ -7,8 +7,11 @@
 #include <vector>
 
 Game::Game()
-        : m_quit(false), m_leftMouseButtonPressed(false), m_mousePosition({0, 0}), m_clickOffset({0, 0}),
-          m_selectedRect(nullptr), m_selectedBlock(nullptr)
+        :m_quit(false)
+        ,m_leftMouseButtonPressed(false)
+        ,m_mousePosition({0, 0})
+        ,m_clickOffset({0, 0})
+        ,m_selectedRect(nullptr), m_selectedBlock(nullptr)
 {
 }
 
@@ -111,9 +114,9 @@ void Game::rotateSelectedBlock()
     }
 }
 
-void Game::run(Grid *grid)
+bool Game::run(Grid *grid)
 {
-
+    bool playAgain{false};
     std::vector<SDL_Rect *> *rectangles;
     std::vector<Blocks *> *blocks;
     std::vector<Blocks *> *notPlacedBlocks;
@@ -188,10 +191,10 @@ void Game::run(Grid *grid)
         }
         if (grid->checkIfWon())
         {
-            UserInterface::wonGame();
             m_quit = true;
+            playAgain = UserInterface::wonGame();
         }
         SDL_RenderPresent(Renderer::m_renderer);
     }
-    Renderer::end();
+    return playAgain;
 }

@@ -1,6 +1,7 @@
 #include <SDL.h>
 
 #include "UserInterface.hpp"
+#include "Renderer.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -9,5 +10,6 @@ int main(int argc, char *argv[])
     (void)argv;
 
     UserInterface::showMenu();
+    Renderer::end();
     return 0;
 }

@@ -16,6 +16,7 @@ void UserInterface::showMenu()
     SDL_Event event;
     SDL_Point mousePosition{0};
     Renderer::init();
+    Grid *grid{nullptr};
 
     while (!quit)
     {
@@ -47,22 +48,31 @@ void UserInterface::showMenu()
 
             if (SDL_PointInRect(&mousePosition, &rectPlay))
             {
-                Grid grid{*chooseGrid()};
-                Game game;
-                game.run(&grid);
-                grid.deleteHeap();
-                quit = true;
+                grid = chooseGrid();
+                if (grid == nullptr) quit = false;
+                else
+                {
+                    Game game;
+                    quit = !game.run(grid);
+                }
             }
 
             if (SDL_PointInRect(&mousePosition, &rectSolve))
             {
-                Grid grid{*chooseGrid()};
-                solverMenu(&grid);
-                quit = true;
+                grid = chooseGrid();
+                if (grid == nullptr) quit = false;
+                else
+                {
+                    quit = !solverMenu(grid);
+                }
             }
         }
 
         SDL_RenderPresent(Renderer::m_renderer);
+    }
+    if (grid != nullptr)
+    {
+        grid->deleteHeap();
     }
 }
 
@@ -105,6 +115,7 @@ Grid* UserInterface::chooseGrid()
         SDL_Rect rightTriangle{x-GRID_MARGIN-static_cast<int>(maxSize),y/2, static_cast<int>(maxSize),static_cast<int>(maxSize)};
         SDL_Rect rectChoose = Renderer::drawButton("Choose", BOTTOM_RIGHT, BLACK, 20, 0);
         SDL_Rect rectGenerateNewGrid = Renderer::drawButton("Generate", BOTTOM_MIDDLE, BLACK);
+        SDL_Rect rectBack = Renderer::drawButton("Back", TOP_RIGHT, BLACK);
 
         if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
         {
@@ -127,9 +138,15 @@ Grid* UserInterface::chooseGrid()
                 return grids.at(counter);
             }
 
-            if (SDL_PointInRect(&mousePosition, &rectGenerateNewGrid)) {
+            if (SDL_PointInRect(&mousePosition, &rectGenerateNewGrid))
+            {
                 grids.push_back(generateGrid());
                 counter = static_cast<int>(grids.size()) - 1;
+            }
+
+            if (SDL_PointInRect(&mousePosition, &rectBack))
+            {
+                quit = true;
             }
         }
 
@@ -139,14 +156,21 @@ Grid* UserInterface::chooseGrid()
     return nullptr;
 }
 
-void UserInterface::wonGame()
+bool UserInterface::wonGame()
 {
     bool quit{false};
+    bool playAgain{false};
     SDL_Event event;
+    SDL_Point mousePosition{0};
     Renderer::init();
 
     while (!quit)
     {
+        Renderer::fillBackground(BACKGROUND_COLOR);
+        Renderer::drawText("You won", TOP_MIDDLE, BLACK);
+        SDL_Rect rectPlayAgain = Renderer::drawButton("Play Again", BOTTOM_MIDDLE, BLACK);
+        SDL_Rect rectExit = Renderer::drawButton("Exit", BOTTOM_RIGHT, RED);
+
         SDL_PollEvent(&event);
 
         if (event.type == SDL_QUIT)
@@ -154,10 +178,28 @@ void UserInterface::wonGame()
             quit = true;
         }
 
-        Renderer::fillBackground(BACKGROUND_COLOR);
-        Renderer::drawText("You won", TOP_MIDDLE, BLACK);
+        if (event.type == SDL_MOUSEMOTION) {
+            mousePosition = {event.motion.x, event.motion.y};
+        }
+
+        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+        {
+            if (SDL_PointInRect(&mousePosition, &rectExit))
+            {
+                quit = true;
+            }
+
+            if (SDL_PointInRect(&mousePosition, &rectPlayAgain))
+            {
+                showMenu();
+                quit = true;
+                playAgain = true;
+            }
+        }
+
         SDL_RenderPresent(Renderer::m_renderer);
     }
+    return playAgain;
 }
 
 
@@ -193,23 +235,54 @@ Grid *UserInterface::generateGrid() {
         solvedGrid = solver.recursiveSolver(tmpGrid);
         *grid = tmpGrid;
     } while (!(solvedGrid.checkIfWon()));
+    solver.cleanUpGrid(grid);
     return grid;
 }
 
-void UserInterface::solverMenu(Grid *grid) {
+bool UserInterface::solverMenu(Grid *grid)
+{
     bool quit{false};
+    bool playAgain{false};
     SDL_Event event;
+    SDL_Point mousePosition{0};
     Solver solver;
     Grid solvedGrid = solver.recursiveSolver(*grid);
 
-    while (!quit) {
+    while (!quit)
+    {
         SDL_PollEvent(&event);
-        if (event.type == SDL_QUIT) {
+        if (event.type == SDL_QUIT)
+        {
             quit = true;
         }
+
+        if (event.type == SDL_MOUSEMOTION)
+        {
+            mousePosition = {event.motion.x, event.motion.y};
+        }
+
         Renderer::fillBackground(GRAY);
         solvedGrid.drawPreview();
         Renderer::drawText("Finished", TOP_MIDDLE, BLACK);
+
+        SDL_Rect rectExit = Renderer::drawButton("EXIT", BOTTOM_RIGHT, RED, 50);
+        SDL_Rect rectPlayAgain = Renderer::drawButton("PLAY AGAIN", BOTTOM_MIDDLE, BLACK, 50);
+
+        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+        {
+            if (SDL_PointInRect(&mousePosition, &rectExit))
+            {
+                quit = true;
+            }
+
+            if (SDL_PointInRect(&mousePosition, &rectPlayAgain))
+            {
+                quit = true;
+                playAgain = true;
+            }
+        }
+
         SDL_RenderPresent(Renderer::m_renderer);
     }
+    return playAgain;
 }

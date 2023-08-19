@@ -20,6 +20,8 @@ public:
 
     void setSolverGrid(const Grid &grid);
 
+    void cleanUpGrid(Grid *grid);
+
 protected:
 private:
     Grid m_grid;

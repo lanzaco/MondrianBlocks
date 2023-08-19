@@ -40,7 +40,8 @@ Grid::Grid()
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 2, WHITE, false));
 }
 
-Grid::Grid(std::vector<Blocks *> grid) {
+Grid::Grid(std::vector<Blocks *> grid)
+{
     clear();
 
     /*
@@ -52,7 +53,8 @@ Grid::Grid(std::vector<Blocks *> grid) {
      * Thus the size of the vector has to be the three black blocks
      * */
 
-    if (grid.size() != BLACK_BLOCK_COUNT) {
+    if (grid.size() != BLACK_BLOCK_COUNT)
+    {
         throw std::invalid_argument("The grid your trying to use is wrong");
     }
 
@@ -349,7 +351,8 @@ bool Grid::checkIfWon() const
                                 [](Blocks *block) { return block == nullptr; });
 }
 
-int checkSurrounding(Blocks block1, Blocks block2) {
+int checkSurrounding(Blocks block1, Blocks block2)
+{
     int counter = 0;
     int x1 = block1.getX();
     int y1 = block1.getY();
@@ -368,7 +371,8 @@ int checkSurrounding(Blocks block1, Blocks block2) {
     return counter;
 }
 
-int checkBoarder(Blocks block, int gridSize) {
+int checkBoarder(Blocks block, int gridSize)
+{
     int counter = 0;
     int x = block.getX();
     int y = block.getY();
@@ -382,7 +386,8 @@ int checkBoarder(Blocks block, int gridSize) {
     return counter;
 }
 
-difficulty Grid::getDifficulty() {
+difficulty Grid::getDifficulty()
+{
     int difficultyAsInt = 0;
     Blocks *block1 = m_blocks.at(0);
     Blocks *block2 = m_blocks.at(1);
@@ -409,12 +414,19 @@ bool Grid::gridContainsBlock(const Blocks *block) const
 }
 
 //All Grids use the same Blocks in heap, so the destructor cant delete them
-void Grid::deleteHeap() {
-    for (auto currentBlock: m_blocks) {
+void Grid::deleteHeap()
+{
+    if (m_blocks.empty()) return;
+    if (m_notPlacedBlocks.empty()) return;
+    for (auto currentBlock: m_blocks)
+    {
         delete currentBlock;
     }
+    m_blocks.clear();
 
-    for (auto currentBlock: m_notPlacedBlocks) {
+    for (auto currentBlock: m_notPlacedBlocks)
+    {
         delete currentBlock;
     }
+    m_notPlacedBlocks.clear();
 }
