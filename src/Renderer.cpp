@@ -119,7 +119,7 @@ void Renderer::drawRectWithBoarder(Blocks *block)
 }
 
 void Renderer::drawTriangle(float x, float y, float width, float height,
-                            orientation orientation)
+                            orientation orientation, SDL_Color color)
 {
     std::vector<SDL_Vertex> triangle;
     triangle.clear();
@@ -127,24 +127,24 @@ void Renderer::drawTriangle(float x, float y, float width, float height,
     {
 
         case UP:
-            triangle.push_back({SDL_FPoint{x + width/2, y}, BLACK, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x, y + height}, BLACK, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x + width, y + height}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width/2, y}, color, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x, y + height}, color, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width, y + height}, color, SDL_FPoint{0}});
             break;
         case RIGHT:
-            triangle.push_back({SDL_FPoint{x + width, y + height/2}, BLACK, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x, y}, BLACK, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x, y + height}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width, y + height/2}, color, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x, y}, color, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x, y + height}, color, SDL_FPoint{0}});
             break;
         case DOWN:
-            triangle.push_back({SDL_FPoint{x + width/2, y + height}, BLACK, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x, y}, BLACK, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x + width, y}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width/2, y + height}, color, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x, y}, color, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width, y}, color, SDL_FPoint{0}});
             break;
         case LEFT:
-            triangle.push_back({SDL_FPoint{x, y + height/2}, BLACK, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x + width, y + height}, BLACK, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x + width, y}, BLACK, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x, y + height/2}, color, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width, y + height}, color, SDL_FPoint{0}});
+            triangle.push_back({SDL_FPoint{x + width, y}, color, SDL_FPoint{0}});
             break;
     }
 
@@ -204,3 +204,66 @@ SDL_Rect Renderer::drawText(const std::string& text, alignment alignment, SDL_Co
     SDL_FreeSurface(surfaceMessage);
     return MessageRect;
 }
+
+void Renderer::drawCrown(float x, float y, float width, float height)
+{
+    Renderer::drawTriangle(x, y,width, height, UP, YELLOW);
+    Renderer::drawTriangle(x + width / 2, y,width, height, UP, YELLOW);
+    Renderer::drawTriangle(x + width, y,width, height, UP, YELLOW);
+
+    SDL_SetRenderDrawColor(Renderer::m_renderer, RED.r, RED.g, RED.b, RED.a);
+    Renderer::drawCircle(Renderer::m_renderer, 640, 510, 10);
+    Renderer::drawCircle(Renderer::m_renderer, 780, 510, 10);
+    SDL_SetRenderDrawColor(Renderer::m_renderer, BLUE.r, BLUE.g, BLUE.b, BLUE.a);
+    Renderer::drawCircle(Renderer::m_renderer, 710, 510, 10);
+
+    SDL_SetRenderDrawColor(Renderer::m_renderer, YELLOW.r, YELLOW.g, YELLOW.b, YELLOW.a);
+    Renderer::drawCircle(Renderer::m_renderer, 640, 390, 20);
+    Renderer::drawCircle(Renderer::m_renderer, 710, 390, 20);
+    Renderer::drawCircle(Renderer::m_renderer, 780, 390, 20);
+}
+
+void Renderer::drawCircle(SDL_Renderer * renderer, int x, int y, int radius)
+{
+    int offsetX;
+    int offsetY;
+    int d;
+    int status;
+
+    offsetX = 0;
+    offsetY = radius;
+    d = radius -1;
+    status = 0;
+
+    while (offsetY >= offsetX)
+    {
+        //drawing lines that add up to a circle
+        status += SDL_RenderDrawLine(renderer, x - offsetY, y + offsetX, x + offsetY, y + offsetX);
+        status += SDL_RenderDrawLine(renderer, x - offsetX, y + offsetY, x + offsetX, y + offsetY);
+        status += SDL_RenderDrawLine(renderer, x - offsetX, y - offsetY, x + offsetX, y - offsetY);
+        status += SDL_RenderDrawLine(renderer, x - offsetY, y - offsetX, x + offsetY, y - offsetX);
+
+        if (status < 0)
+        {
+            break;
+        }
+
+        if (d >= 2 * offsetX)
+        {
+            d -= 2 * offsetX + 1;
+            offsetX += 1;
+        }
+        else if (d < 2 * (radius - offsetY))
+        {
+            d += 2 * offsetY - 1;
+            offsetY -= 1;
+        }
+        else
+        {
+            d += 2 * (offsetY - offsetX - 1);
+            offsetY -= 1;
+            offsetX += 1;
+        }
+    }
+}
+

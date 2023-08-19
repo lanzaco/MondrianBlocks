@@ -139,13 +139,16 @@ void UserInterface::wonGame()
             quit = true;
         }
         Renderer::fillBackground(BACKGROUND_COLOR);
-        Renderer::drawText("You won", TOP_MIDDLE, BLACK);
+        Renderer::drawText("Congratulations !", TOP_MIDDLE, RED, 0, -30);
+        Renderer::drawText("you won the game !", BOTTOM_MIDDLE, YELLOW, 0, 30);
+        Renderer::drawCrown(570, 400, 140, 160);
+
         SDL_RenderPresent(Renderer::m_renderer);
     }
 }
 
-
-Grid *UserInterface::generateGrid() {
+Grid *UserInterface::generateGrid()
+{
     Grid *grid = new Grid;
     Solver solver;
     Grid solvedGrid;
