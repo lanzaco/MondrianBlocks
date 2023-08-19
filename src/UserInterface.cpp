@@ -167,8 +167,8 @@ bool UserInterface::wonGame()
     while (!quit)
     {
         Renderer::fillBackground(BACKGROUND_COLOR);
-        Renderer::drawText("Congratulations !", TOP_MIDDLE, RED, 0, -30);
-        Renderer::drawText("you won the game !", BOTTOM_MIDDLE, YELLOW, 0, 30);
+        Renderer::drawText("Congratulations !", TOP_MIDDLE, RED, 0, 20);
+        Renderer::drawText("you won the game !", TOP_MIDDLE, YELLOW, 0, 110);
         Renderer::drawCrown(570, 400, 140, 160);
 
         SDL_Rect rectPlayAgain = Renderer::drawButton("Play Again", BOTTOM_MIDDLE, BLACK);
