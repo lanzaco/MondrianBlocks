@@ -4,32 +4,27 @@
 
 class Blocks
 {
-
 public:
     Blocks(int x, int y, int sizeX, int sizeY, SDL_Color color, bool isRotated = false);
     Blocks() = default;
     ~Blocks() = default;
 
     [[nodiscard]] int getX() const;
-
     [[nodiscard]] int getY() const;
-
     [[nodiscard]] int getSizeX() const;
-
     [[nodiscard]] int getSizeY() const;
-
     [[nodiscard]] bool getIsRotated() const;
-
     [[nodiscard]] SDL_Color getColor() const;
-    SDL_Rect* getRect();
+
+    [[nodiscard]] SDL_Rect *getRect();
 
     void updateRect();
-    std::pair<int, int> getNewCoords();
     void setX(int x);
     void setY(int y);
     void setRotate(bool rotation);
     void rotate();
 
+    std::pair<int, int> getNewCoords();
 private:
     int m_x;
     int m_y;

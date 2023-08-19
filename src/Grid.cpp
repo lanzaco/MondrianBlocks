@@ -7,6 +7,7 @@
 #include <tuple>
 #include <vector>
 #include <algorithm>
+#include <stdexcept>
 
 int Grid::m_gridSize = 8;
 
@@ -15,31 +16,60 @@ int Grid::m_counter = 0;
 Grid::Grid()
 {
     clear();
+
+    /*
+     * This order speeds up the recursive solver
+     * by first placing the 1x blocks, then the bigger
+     * ones
+     * */
+
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 1, BLACK, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 2, BLACK, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 3, BLACK, false));
+
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 4, BLUE, false));
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 5, BLUE, false));
+
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 3, 4, YELLOW, false));
+
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 5, RED, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 4, RED, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 3, RED, false));
+
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 3, 3, WHITE, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 2, WHITE, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 4, BLUE, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 5, BLUE, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 3, 4, YELLOW, false));
 }
 
-Grid::Grid(std::vector<Blocks *> grid)
-{
+Grid::Grid(std::vector<Blocks *> grid) {
     clear();
+
+    /*
+     * This order speeds up the recursive solver
+     * by first placing the 1x blocks, then the bigger
+     * ones
+     *
+     * The black blocks have to be in the vector, so they are already placed
+     * Thus the size of the vector has to be the three black blocks
+     * */
+
+    if (grid.size() != BLACK_BLOCK_COUNT) {
+        throw std::invalid_argument("The grid your trying to use is wrong");
+    }
+
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 4, BLUE, false));
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 5, BLUE, false));
+
+    m_notPlacedBlocks.push_back(new Blocks(0, 0, 3, 4, YELLOW, false));
+
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 5, RED, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 4, RED, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 3, RED, false));
+
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 3, 3, WHITE, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 2, 2, WHITE, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 4, BLUE, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 5, BLUE, false));
-    m_notPlacedBlocks.push_back(new Blocks(0, 0, 3, 4, YELLOW, false));
+
     m_blocks = std::move(grid);
+
     for (auto currentBlock : m_blocks)
     {
         int x = currentBlock->getX();
@@ -92,11 +122,6 @@ bool Grid::checkIfPlaceable(Blocks* block) const
         sizeY = tmp;
     }
 
-    if((x + sizeX > 8) || (y + sizeY > 8))
-    {
-        return false;
-    }
-
     if (x < 0 || y < 0 || x + sizeX > m_gridSize || y + sizeY > m_gridSize) return false;
 
     for (int i = y; i < y + sizeY; ++i)
@@ -105,8 +130,7 @@ bool Grid::checkIfPlaceable(Blocks* block) const
         {
             if (m_grid.at(i * m_gridSize + j) != nullptr)
             {
-                if (m_grid.at(i * m_gridSize + j) != block)
-                    return false;
+                if (m_grid.at(i * m_gridSize + j) != block) return false;
             }
         }
     }
@@ -144,6 +168,7 @@ void Grid::placeBlock(Blocks* block)
             currentBlock = nullptr;
         }
     }
+
     for (int i = y; i < y + sizeY; ++i)
     {
         for (int j = x; j < x + sizeX; ++j)
@@ -151,6 +176,7 @@ void Grid::placeBlock(Blocks* block)
             m_grid.at(i * m_gridSize + j) = block;
         }
     }
+
     block->setX(x);
     block->setY(y);
     block->updateRect();
@@ -376,10 +402,19 @@ difficulty Grid::getDifficulty() {
     return difficulty::impossible;
 }
 
-
-
 bool Grid::gridContainsBlock(const Blocks *block) const
 {
     return std::ranges::any_of(m_grid.cbegin(), m_grid.cend(),
                                [block](Blocks *currentBlock){return currentBlock == block;});
+}
+
+//All Grids use the same Blocks in heap, so the destructor cant delete them
+void Grid::deleteHeap() {
+    for (auto currentBlock: m_blocks) {
+        delete currentBlock;
+    }
+
+    for (auto currentBlock: m_notPlacedBlocks) {
+        delete currentBlock;
+    }
 }

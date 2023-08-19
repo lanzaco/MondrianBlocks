@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Blocks.hpp"
+
 #include <vector>
 
 enum class difficulty {
@@ -26,6 +28,8 @@ public:
     void drawPreview();
     void moveBlock(Blocks* block);
     void showMissingBlocks() const;
+
+    void deleteHeap();
 
     [[nodiscard]] bool checkIfWon() const;
     difficulty getDifficulty();

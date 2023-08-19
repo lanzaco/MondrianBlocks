@@ -7,12 +7,8 @@
 #include <vector>
 
 Game::Game()
-    : m_quit(false),
-      m_leftMouseButtonPressed(false),
-      m_mousePosition({0, 0}),
-      m_clickOffset({0, 0}),
-      m_selectedRect(nullptr),
-      m_selectedBlock(nullptr)
+        : m_quit(false), m_leftMouseButtonPressed(false), m_mousePosition({0, 0}), m_clickOffset({0, 0}),
+          m_selectedRect(nullptr), m_selectedBlock(nullptr)
 {
 }
 
@@ -55,7 +51,11 @@ void Game::selectNotPlacedBlockWithMouse(const std::vector<Blocks *> &notPlacedB
     {
         int distance = (Grid::m_gridSize * Renderer::m_maxSizePerSquare) + 2 * GRID_MARGIN;
         Blocks *currentBlock = notPlacedBlocks.at(Grid::m_counter);
-        SDL_Rect dropArea = {distance + 100 + 2 * GRID_MARGIN, GRID_MARGIN, currentBlock->getSizeX() * Renderer::m_maxSizePerSquare, currentBlock->getSizeY() * Renderer::m_maxSizePerSquare};
+        int x = distance + 100 + 2 * GRID_MARGIN;
+        int y = GRID_MARGIN;
+        int width = currentBlock->getSizeX() * Renderer::m_maxSizePerSquare;
+        int height = currentBlock->getSizeY() * Renderer::m_maxSizePerSquare;
+        SDL_Rect dropArea = {x, y, width, height};
         if (SDL_PointInRect(&m_mousePosition, &dropArea))
         {
             m_selectedBlock = currentBlock;
@@ -118,16 +118,12 @@ void Game::run(Grid *grid)
     std::vector<Blocks *> *blocks;
     std::vector<Blocks *> *notPlacedBlocks;
 
-    // Used to initialize the size of the rendered Grid
-    Renderer::windowSizeChanged();
-
     blocks = grid->getBlocks();
     rectangles = grid->getRectangles();
     notPlacedBlocks = grid->getNotPlacedBlocks();
 
     while (!m_quit)
     {
-
         SDL_Event event;
         SDL_WaitEvent(&event);
 
@@ -155,13 +151,9 @@ void Game::run(Grid *grid)
             if (!m_leftMouseButtonPressed && event.button.button == SDL_BUTTON_LEFT)
             {
                 m_leftMouseButtonPressed = true;
-
                 selectRectWithMouse(*rectangles);
-
                 selectNotPlacedBlockWithMouse(*notPlacedBlocks);
-
                 handleTriangleClick();
-
                 m_selectedBlock = findSelectedBlock(blocks);
             }
             if (m_leftMouseButtonPressed && event.button.button == SDL_BUTTON_RIGHT)
