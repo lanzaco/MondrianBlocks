@@ -1,9 +1,7 @@
-//
-// Created by Annika Jung on 31.07.23.
-//
 #pragma once
 
 #include "Grid.hpp"
+
 #include <list>
 #include <string>
 
@@ -13,7 +11,6 @@ public:
     FileHandler() = default;
     std::vector<Grid *> readFile(const std::string& filePath);
     void setMGrid(std::string line);
-
 private:
     std::vector<Grid *> m_listGrid;
 };

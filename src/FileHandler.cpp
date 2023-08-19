@@ -1,12 +1,12 @@
-
 #include "FileHandler.hpp"
 #include "Colors.hpp"
+
 #include <utility>
 #include <vector>
-#include <iostream>
 #include <fstream>
 #include <regex>
 #include <string>
+#include <iostream>
 
 Blocks *newBlock(std::vector<int> vecBlockCoordinate, int startIndex);
 std::vector<int> splitStreamIntoVec(std::string line);
@@ -19,21 +19,20 @@ std::vector<Grid *> FileHandler::readFile(const std::string& filePath)
     if (!input_stream)
     {
         std::cerr << "Can't open input file!" << std::endl;
+        return m_listGrid;
     }
-    else
+
+    std::string line;
+    while (getline(input_stream, line))
     {
-        std::string line;
-        while (getline(input_stream, line))
+        if (line.contains("Gridsize:"))
         {
-            if (line.contains("Gridsize:"))
-            {
-                gridSize = std::stoi(line.substr(line.find("Gridsize: ") + 10, 1));
-                Grid::setGridSize(gridSize);
-            }
-            if (line.contains("Grid:"))
-            {
-                setMGrid(line);
-            }
+            gridSize = std::stoi(line.substr(line.find("Gridsize: ") + 10, 1));
+            Grid::setGridSize(gridSize);
+        }
+        if (line.contains("Grid:"))
+        {
+            setMGrid(line);
         }
     }
     return m_listGrid;
@@ -75,9 +74,9 @@ Blocks *newBlock(std::vector<int> vecBlockCoordinate, int startIndex)
     int sizeX;
     int sizeY;
     x = vecBlockCoordinate.at(startIndex);
-    y = vecBlockCoordinate.at(startIndex + 1);
-    sizeX = vecBlockCoordinate.at(startIndex + 2);
-    sizeY = vecBlockCoordinate.at(startIndex + 3);
+    y = vecBlockCoordinate.at(++startIndex);
+    sizeX = vecBlockCoordinate.at(++startIndex);
+    sizeY = vecBlockCoordinate.at(++startIndex);
     auto *newBlock = new Blocks(x, y, sizeX, sizeY, BLACK);
     return newBlock;
 }

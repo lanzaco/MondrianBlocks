@@ -7,6 +7,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+// not zero, since the tests don't initialize the renderer
+// thus breaking the program with a division by zero error
 int Renderer::m_maxSizePerSquare{1};
 
 SDL_Window* Renderer::m_window{nullptr};
@@ -17,24 +19,26 @@ TTF_Font* Renderer::m_font{nullptr};
 
 void Renderer::init()
 {
+    //renderer already initialized
     if (m_renderer != nullptr)
     {
         return;
     }
+
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-        throw std::invalid_argument("Error");
+        throw std::invalid_argument("Cant initialize the renderer");
     }
 
     if (TTF_Init() != 0)
     {
-        throw std::invalid_argument("Error");
+        throw std::invalid_argument("Cant initialize SDL_ttf");
     }
 
     m_font = TTF_OpenFont("./../../data/OpenSans.ttf", 100);
     if (m_font == nullptr)
     {
-        throw std::invalid_argument("Cant open Text");
+        throw std::invalid_argument("Cant open the font");
     }
 
 #if defined linux && SDL_VERSION_ATLEAST(2, 0, 8)
@@ -61,6 +65,8 @@ void Renderer::init()
     {
         throw std::invalid_argument("SDL2 could not create the renderer");
     }
+
+    //update all for logic used variables based on window size
     windowSizeChanged();
 }
 
@@ -147,8 +153,26 @@ void Renderer::drawTriangle(float x, float y, float width, float height,
             triangle.push_back({SDL_FPoint{x + width, y}, color, SDL_FPoint{0}});
             break;
     }
+    SDL_SetRenderDrawColor(Renderer::m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
 
-    SDL_RenderGeometry( Renderer::m_renderer, nullptr, triangle.data(), static_cast<int>(triangle.size()), nullptr, 0 );
+    int intX = static_cast<int>(x);
+    int intY = static_cast<int>(y);
+    int intWidth = static_cast<int>(width);
+    int intHeight = static_cast<int>(height);
+
+    int numberVertices = static_cast<int>(triangle.size());
+
+    SDL_Rect triangleRect{intX, intY, intWidth, intHeight};
+    SDL_RenderGeometry(Renderer::m_renderer, nullptr, triangle.data(), numberVertices, nullptr, 0);
+    SDL_RenderDrawRect(Renderer::m_renderer, &triangleRect);
+}
+
+SDL_Rect Renderer::drawButton(const std::string &text, alignment alignment, SDL_Color color, int x, int y)
+{
+    auto rectangle = drawText(text, alignment, color, x, y);
+    SDL_SetRenderDrawColor(Renderer::m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+    SDL_RenderDrawRect(Renderer::m_renderer, &rectangle);
+    return rectangle;
 }
 
 SDL_Rect Renderer::drawText(const std::string& text, alignment alignment, SDL_Color color, int x, int y)

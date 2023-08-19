@@ -22,9 +22,8 @@ protected:
     };
     void setUpClearTest()
     {
-        std::vector<Blocks*> emptyVecBlocks = {};
-        emptyVecBlocks.push_back(&m_newBlock);
-        m_grid = Grid(emptyVecBlocks);
+        m_grid = Grid();
+        m_grid.placeBlock(new Blocks(0, 0, 1, 1, BLACK));
     };
     void placeEmptyListOfBlocks()
     {

@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL.h>
 
-constexpr SDL_Color EMPTY = {0, 0, 0, 0};
 constexpr SDL_Color BLACK = {0, 0, 0, 0xFF};
 constexpr SDL_Color WHITE = {0xFF, 0xFF, 0xFF, 0xFF};
 constexpr SDL_Color GRAY = {0x64, 0x64, 0x64, 0xFF};
