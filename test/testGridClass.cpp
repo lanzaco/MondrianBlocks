@@ -4,6 +4,7 @@
 #include "../src/Difficulty.hpp"
 
 #include <vector>
+#include <algorithm>
 
 constexpr int MAXCOLUMN = 7;
 
