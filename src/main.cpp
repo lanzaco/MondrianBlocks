@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-    //Input is unused
+    // Input is unused
     (void)argc;
     (void)argv;
 

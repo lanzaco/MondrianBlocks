@@ -5,7 +5,7 @@
 
 Grid setUpUnsolvableGrid()
 {
-    std::vector<Blocks*> vecBlocks;
+    std::vector<Blocks *> vecBlocks;
     vecBlocks.push_back(new Blocks(2, 2, 1, 2, BLACK, false));
     vecBlocks.push_back(new Blocks(4, 2, 1, 3, BLACK, false));
     vecBlocks.push_back(new Blocks(0, 0, 1, 1, BLACK, false));
@@ -15,10 +15,10 @@ Grid setUpUnsolvableGrid()
 
 Grid setUpSolvableGrid()
 {
-    std::vector<Blocks*> vecBlocks;
-    vecBlocks.push_back(new Blocks(2,3,1,2, BLACK, false));
-    vecBlocks.push_back(new Blocks(5,6,1,1, BLACK, false));
-    vecBlocks.push_back(new Blocks(4,2,1,3, BLACK, false));
+    std::vector<Blocks *> vecBlocks;
+    vecBlocks.push_back(new Blocks(2, 3, 1, 2, BLACK, false));
+    vecBlocks.push_back(new Blocks(5, 6, 1, 1, BLACK, false));
+    vecBlocks.push_back(new Blocks(4, 2, 1, 3, BLACK, false));
     Grid solvableGrid{vecBlocks};
     return solvableGrid;
 }
@@ -36,6 +36,3 @@ TEST(Test, UnsolvableGrid)
     Grid grid = setUpUnsolvableGrid();
     ASSERT_FALSE(solver.recursiveSolver(grid).checkIfWon());
 }
-
-
-

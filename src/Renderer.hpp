@@ -34,19 +34,17 @@ public:
     static void init();
     static void end();
     static void drawRectWithBoarder(SDL_Rect rect, SDL_Color color);
-    static void drawRectWithBoarder(Blocks* block);
+    static void drawRectWithBoarder(Blocks *block);
     static void drawRect(SDL_Rect rect, SDL_Color color);
     static void fillBackground(SDL_Color color);
     static void windowSizeChanged();
     static void drawTriangle(float x, float y, float width, float height, orientation orientation, SDL_Color color = BLACK);
-    static SDL_Rect drawText(const std::string& text, alignment alignment, SDL_Color color, int x = 0, int y = 0);
+    static SDL_Rect drawText(const std::string &text, alignment alignment, SDL_Color color, int x = 0, int y = 0);
     static void drawCrown(float x, float y, float width, float height);
-    static void drawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius);
-
+    static void drawCircle(SDL_Renderer *renderer, int32_t centreX, int32_t centreY, int32_t radius);
     static SDL_Rect drawButton(const std::string &text, alignment alignment, SDL_Color color, int x = 0, int y = 0);
-
-    static SDL_Window* m_window;
-    static SDL_Renderer* m_renderer;
+    static SDL_Window *m_window;
+    static SDL_Renderer *m_renderer;
     static int m_maxSizePerSquare;
-    static TTF_Font* m_font;
+    static TTF_Font *m_font;
 };

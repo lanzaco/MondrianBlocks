@@ -12,15 +12,12 @@ public:
     void handleMouseClick(Grid *grid);
     void selectRectWithMouse(const std::vector<SDL_Rect *> &rectangles);
     void selectNotPlacedBlockWithMouse(const std::vector<Blocks *> &notPlacedBlocks);
-
     void handleTriangleClick() const;
-
-    Blocks *findSelectedBlock(const std::vector<Blocks *> *blocks) const;
     void rotateSelectedBlock();
-    Grid* makeOwnGrid();
-
+    Blocks *findSelectedBlock(const std::vector<Blocks *> *blocks) const;
+    Grid *makeOwnGrid();
     bool run(Grid *grid);
-protected:
+
 private:
     bool m_quit;
     bool m_leftMouseButtonPressed;

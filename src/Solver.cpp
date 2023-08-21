@@ -4,7 +4,8 @@
 
 Grid Solver::recursiveSolver(Grid grid)
 {
-    if (grid.getNotPlacedBlocks()->empty()) return grid;
+    if (grid.getNotPlacedBlocks()->empty())
+        return grid;
 
     Blocks *currentBlock = grid.getNotPlacedBlocks()->front();
     int sizeX = currentBlock->getSizeX() - 1;
@@ -12,28 +13,37 @@ Grid Solver::recursiveSolver(Grid grid)
 
     for (int rotate = 0; (rotate < 2) && ((sizeX != sizeY) || (rotate == 0)); ++rotate)
     {
-        if (rotate == 1) {
+        if (rotate == 1)
+        {
             currentBlock->setRotate(true);
             int tmp = sizeX;
             sizeX = sizeY;
             sizeY = tmp;
-        } else
+        }
+        else
         {
             currentBlock->setRotate(false);
         }
+
         for (int yIterator = 0; yIterator < Grid::getGridSize() - sizeY; ++yIterator)
         {
             currentBlock->setY(yIterator);
+
             for (int xIterator = 0; xIterator < Grid::getGridSize() - sizeX; ++xIterator)
             {
                 currentBlock->setX(xIterator);
                 currentBlock->updateRect();
+
                 if (grid.checkIfPlaceable(currentBlock))
                 {
                     grid.placeBlock(currentBlock);
-                    if (grid.getNotPlacedBlocks()->empty()) return grid;
+
+                    if (grid.getNotPlacedBlocks()->empty())
+                        return grid;
                     Grid newGrid = recursiveSolver(grid);
-                    if (newGrid.getNotPlacedBlocks()->empty()) return newGrid;
+
+                    if (newGrid.getNotPlacedBlocks()->empty())
+                        return newGrid;
                 }
             }
         }
@@ -44,7 +54,8 @@ Grid Solver::recursiveSolver(Grid grid)
 void Solver::cleanUpGrid(Grid *grid)
 {
     auto notPlacedBlocks = *grid->getNotPlacedBlocks();
-    for (auto currentBlock: notPlacedBlocks)
+
+    for (auto currentBlock : notPlacedBlocks)
     {
         auto new_end = std::remove(notPlacedBlocks.begin(), notPlacedBlocks.end(), currentBlock);
         notPlacedBlocks.erase(new_end, notPlacedBlocks.end());
@@ -54,7 +65,8 @@ void Solver::cleanUpGrid(Grid *grid)
     }
 
     auto placedBlocks = *grid->getBlocks();
-    for (auto currentBlock: placedBlocks)
+
+    for (auto currentBlock : placedBlocks)
     {
         auto new_end = std::remove(placedBlocks.begin(), placedBlocks.end(), currentBlock);
         placedBlocks.erase(new_end, placedBlocks.end());
@@ -63,7 +75,9 @@ void Solver::cleanUpGrid(Grid *grid)
     }
 
     auto rectangles = *grid->getRectangles();
-    for (auto currentReact : rectangles) {
+
+    for (auto currentReact : rectangles)
+    {
         auto new_end = std::remove(rectangles.begin(), rectangles.end(), currentReact);
         rectangles.erase(new_end, rectangles.end());
         rectangles.emplace_back(currentReact);
