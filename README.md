@@ -128,7 +128,7 @@ CTests funktionieren nicht, es müssen GoogleTests ausgeführt werden!
 
 1. Das erste Ausführen des Projekt kann unter Umständen ein paar Minuten in Anspruch nehmen, 
 da zunächst alle Bibliotheken gebuildet werden müssen.\
-2. Die nötigen Bibliotheken, sowie GoggleTests werden im building-Prozess von GitHub geklont.\
+2. Die nötigen Bibliotheken, sowie GoogleTests werden im building-Prozess von GitHub geklont.\
 3. Das Projekt sollte im *release* ausgeführt, werden, da die Performance deutlich besser ist im Vergleich zu *debug*.\
 
 ### Team
