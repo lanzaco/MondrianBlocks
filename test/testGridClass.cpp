@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 #include "../src/Grid.hpp"
 #include "../src/Colors.hpp"
+#include "../src/Difficulty.hpp"
+
 #include <vector>
 
 constexpr int MAXCOLUMN = 7;
@@ -15,7 +17,7 @@ protected:
     bool isGridEmpty()
     {
         auto grid = *m_grid.getGrid();
-        return std::none_of(grid.cbegin(), grid.cend(), [](Blocks* block){ return block == nullptr;});
+        return std::all_of(grid.cbegin(), grid.cend(), [](Blocks* block){ return block == nullptr;});
     };
     void setUpClearTest()
     {
@@ -67,7 +69,7 @@ protected:
     static Grid setUpImpossibleGrid()
     {
         std::vector<Blocks*> impossibleBlocks = {};
-        impossibleBlocks.push_back(new Blocks{5,2,1,1,BLACK, false});
+        impossibleBlocks.push_back(new Blocks{1,1,1,1,BLACK, false});
         impossibleBlocks.push_back(new Blocks{3,2,1,2,BLACK, false});
         impossibleBlocks.push_back(new Blocks{1,5,3,1,BLACK, false});
         Grid impossibleGrid{impossibleBlocks};
@@ -242,25 +244,25 @@ TEST_F(TestGridClass, CheckBlockThatIsNotInGrid)
 TEST_F(TestGridClass, GetDifficultyEasy)
 {
     m_grid = setUpEasyGrid();
-    ASSERT_EQ(difficulty::easy, m_grid.getDifficulty());
+    ASSERT_EQ(difficulty::easy, Difficulty::getDifficulty(&m_grid));
 }
 
 TEST_F(TestGridClass, GetDifficultyMedium)
 {
     m_grid = setUpMediumGrid();
-    ASSERT_EQ(difficulty::medium, m_grid.getDifficulty());
+    ASSERT_EQ(difficulty::medium, Difficulty::getDifficulty(&m_grid));
 }
 
 TEST_F(TestGridClass, GetDifficultyHard)
 {
     m_grid = setUpHardGrid();
-    ASSERT_EQ(difficulty::hard, m_grid.getDifficulty());
+    ASSERT_EQ(difficulty::hard, Difficulty::getDifficulty(&m_grid));
 }
 
 TEST_F(TestGridClass, GetDifficultyImpossible)
 {
     m_grid = setUpImpossibleGrid();
-    ASSERT_EQ(difficulty::impossible, m_grid.getDifficulty());
+    ASSERT_EQ(difficulty::impossible, Difficulty::getDifficulty(&m_grid));
 }
 
 

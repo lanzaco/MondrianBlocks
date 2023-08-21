@@ -2,6 +2,7 @@
 #include "Blocks.hpp"
 #include "Grid.hpp"
 
+#include <algorithm>
 #include <vector>
 
 int checkSurrounding(const std::vector<Blocks*>& blocks, const std::vector<Blocks*>& grid)
