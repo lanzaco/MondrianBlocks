@@ -119,6 +119,10 @@ Jeder Block wird hochkant angezeigt, kann aber rotiert werden durch Drücken der
 
 1. Git Repository klonen
 2. CMake builden
+3. Für Tests das Projekt Tests ausführen
+4. Für das Spiel das Projekt MondrianBlocks ausführen
+
+CTests funktionieren nicht, es müssen GoogleTests ausgeführt werden!
 
 ### Hinweise
 
