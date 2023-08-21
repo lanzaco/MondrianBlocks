@@ -19,11 +19,9 @@ Grid::Grid()
 {
     clear();
 
-    /*
-     * This order speeds up the recursive solver
-     * by first placing the 1x blocks, then the bigger
-     * ones
-     * */
+    // This order speeds up the recursive solver
+    // by first placing the 1x blocks, then the bigger
+    // ones
 
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 1, BLACK, false));
     m_notPlacedBlocks.push_back(new Blocks(0, 0, 1, 2, BLACK, false));
@@ -46,14 +44,12 @@ Grid::Grid(std::vector<Blocks *> grid)
 {
     clear();
 
-    /*
-     * This order speeds up the recursive solver
-     * by first placing the 1x blocks, then the bigger
-     * ones
-     *
-     * The black blocks have to be in the vector, so they are already placed
-     * Thus the size of the vector has to be the three black blocks
-     * */
+    // This order speeds up the recursive solver
+    // by first placing the 1x blocks, then the bigger
+    // ones
+    //
+    // The black blocks have to be in the vector, so they are already placed
+    // Thus the size of the vector has to be the three black blocks
 
     if (grid.size() != BLACK_BLOCK_COUNT)
     {
@@ -410,7 +406,7 @@ Grid *Grid::generateGrid()
         for (auto currentBlock : notPlacedBlocks)
         {
             SDL_Color currentColor = currentBlock->getColor();
-            
+
             if (currentColor.r == BLACK.r && currentColor.g == BLACK.g && currentColor.b == BLACK.b &&
                 currentColor.a == BLACK.a)
             {
