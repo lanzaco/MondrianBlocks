@@ -1,6 +1,5 @@
 #include "Solver.hpp"
 
-#include <iostream>
 #include <algorithm>
 
 Grid Solver::recursiveSolver(Grid grid)

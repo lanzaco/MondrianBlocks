@@ -35,7 +35,7 @@ void Renderer::init()
         throw std::invalid_argument("Cant initialize SDL_ttf");
     }
 
-    m_font = TTF_OpenFont("./../../data/OpenSans.ttf", 100);
+    m_font = TTF_OpenFont("./OpenSans.ttf", 100);
     if (m_font == nullptr)
     {
         throw std::invalid_argument("Cant open the font");
