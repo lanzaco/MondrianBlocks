@@ -13,7 +13,13 @@ Dabei sind in jedem Spielfeld die Anfangsblöcke unterschiedlich plaziert.
 
 Beispiel:
 &nbsp;
-//image ungelöst --> image gelöst
+
+<img src = "/pictures/EasyGrid.png"
+	width = "200"
+	height = "200"/> &nbsp;&nbsp;&nbsp;&#129154;&nbsp;&nbsp;&nbsp; <img src = "/pictures/FinishedGrid.png"
+	width = "200"
+	height = "200"/>
+ 
 
 &nbsp;
 [MondrianBlocks](https://mondrianblocks.com/) - Offizielle Seite des Spiels
@@ -87,12 +93,27 @@ Die Komplexität ist in 4 Stufen unterteilt: _Easy, Medium, Hard, Impossible_. D
 
 **Easy:** &nbsp;Es existieren zwei Lücken der Größe 1. Darum können beide Blöcke mit der Breite 1 direkt zu Beginn plaziert werden.\
 <ins> Beispiel: </ins>\
+<img src = "/pictures/EasyGrid.png"
+	width = "200"
+	height = "200"/>
+ 
 **Medium:**&nbsp; Es existiert eine Lücke der Größe 1. Es kann zu Beginn einer der beiden Blöcke plaziert werden.\
 <ins>Beispiel: </ins>\
+<img src = "/pictures/MediumGrid.png"
+	width = "200"
+	height = "200"/>
+ 
 **Hard:**&nbsp; Es existiert keine Lücke der Größe 1. Keiner der beiden Blöcke kann zu Beginn plaziert werden.\
 <ins>Beispiel: </ins>\
+<img src = "/pictures/HardGrid.png"
+	width = "200"
+	height = "200"/>
+ 
 **Impossible:** Es existieren 3 oder mehr Lücken der Größe 1, die nicht mit den beiden Blöcken befüllt werden können. Somit gibt es immer eine Lücke, die durch keinen Block gefüllt werden kann. das Spielfeld ist somit unlösbar.\
-<ins>Beispiel</ins>:
+<ins>Beispiel</ins>:\
+<img src = "/pictures/EasyGrid.png"
+	width = "200"
+	height = "200"/>
 
 Die Ermittlung der Schwierigkeit findet in einer eigenen Klasse _Difficulty_ statt. Logisch kann sie jedoch der Klasse _Grid_ zugeordnet werden. 
 
@@ -127,9 +148,9 @@ CTests funktionieren nicht, es müssen GoogleTests ausgeführt werden!
 ### Hinweise
 
 1. Das erste Ausführen des Projekt kann unter Umständen ein paar Minuten in Anspruch nehmen, 
-da zunächst alle Bibliotheken gebuildet werden müssen.\
-2. Die nötigen Bibliotheken, sowie GoogleTests werden im building-Prozess von GitHub geklont.\
-3. Das Projekt sollte im *release* ausgeführt, werden, da die Performance deutlich besser ist im Vergleich zu *debug*.\
+da zunächst alle Bibliotheken gebuildet werden müssen.
+2. Die nötigen Bibliotheken, sowie GoogleTests werden im building-Prozess von GitHub geklont.
+3. Das Projekt sollte im *release* ausgeführt, werden, da die Performance deutlich besser ist im Vergleich zu *debug*.
 
 ### Team
 Benni Stauder: [Github](https://github.com/Benni-Stauder)\
