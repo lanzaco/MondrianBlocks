@@ -36,4 +36,3 @@ TEST(FileHandlerTest_2, TestSetGridSize)
     // has to be set back to 8 for the following tests
     Grid::setGridSize(8);
 }
-
