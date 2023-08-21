@@ -1,4 +1,3 @@
-
 #include "Game.hpp"
 #include "Grid.hpp"
 #include "Colors.hpp"
@@ -28,10 +27,12 @@ void Game::moveSelectedRectWithMouse()
 void Game::handleMouseClick(Grid *grid)
 {
     m_leftMouseButtonPressed = false;
+
     if (m_selectedBlock)
     {
         grid->moveBlock(m_selectedBlock);
     }
+
     m_selectedRect = nullptr;
     m_selectedBlock = nullptr;
 }
@@ -60,6 +61,7 @@ void Game::selectNotPlacedBlockWithMouse(const std::vector<Blocks *> &notPlacedB
         int width = currentBlock->getSizeX() * Renderer::m_maxSizePerSquare;
         int height = currentBlock->getSizeY() * Renderer::m_maxSizePerSquare;
         SDL_Rect dropArea = {x, y, width, height};
+
         if (SDL_PointInRect(&m_mousePosition, &dropArea))
         {
             m_selectedBlock = currentBlock;
@@ -84,6 +86,7 @@ void Game::handleTriangleClick() const
     int height = 200;
     SDL_Rect leftTriangle{distance, y / 2 - width / 2, width, height};
     SDL_Rect rightTriangle{distance + sizeBox, y / 2 - width / 2, width, height};
+
     if (SDL_PointInRect(&m_mousePosition, &leftTriangle))
     {
         Grid::m_counter--;
@@ -214,10 +217,12 @@ Grid *Game::makeOwnGrid()
     rectangles = grid->getRectangles();
     blocks = grid->getBlocks();
     notPlacedBlocks = grid->getNotPlacedBlocks();
+
     for (auto currentBlock : *notPlacedBlocks)
     {
         SDL_Color color = currentBlock->getColor();
         bool isBlack = (color.r == BLACK.r) && (color.g == BLACK.g) && (color.b == BLACK.b) && (color.a == BLACK.a);
+        
         if (!isBlack)
         {
             tmpNotPlacedBlocks->push_back(currentBlock);

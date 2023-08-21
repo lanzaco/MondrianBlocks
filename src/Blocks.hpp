@@ -15,15 +15,15 @@ public:
     [[nodiscard]] int getSizeY() const;
     [[nodiscard]] bool getIsRotated() const;
     [[nodiscard]] SDL_Color getColor() const;
-
     [[nodiscard]] SDL_Rect *getRect();
 
-    void updateRect();
     void setX(int x);
     void setY(int y);
     void setRotate(bool rotation);
+    
+    void updateRect();
     void rotate();
-
+    
     std::pair<int, int> getNewCoords();
 
 private:

@@ -58,12 +58,14 @@ void Blocks::updateRect()
 
     int coordX = m_x * Renderer::m_maxSizePerSquare + GRID_BORDER;
     int coordY = m_y * Renderer::m_maxSizePerSquare + GRID_BORDER;
+
     if (m_isRotated)
     {
         int tmp = width;
         width = height;
         height = tmp;
     }
+
     SDL_Rect rect{coordX, coordY, width, height};
     m_rect = rect;
 }

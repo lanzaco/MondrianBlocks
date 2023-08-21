@@ -80,6 +80,7 @@ Grid::Grid(std::vector<Blocks *> grid)
         int y = currentBlock->getY();
         int sizeX = currentBlock->getSizeX();
         int sizeY = currentBlock->getSizeY();
+
         for (int i = y; i < y + sizeY; ++i)
         {
             for (int j = x; j < x + sizeX; ++j)
@@ -89,6 +90,7 @@ Grid::Grid(std::vector<Blocks *> grid)
         }
         SDL_Color color = currentBlock->getColor();
         bool isBlack = (color.r == BLACK.r) && (color.g == BLACK.g) && (color.b == BLACK.b) && (color.a == BLACK.a);
+
         if (!isBlack)
         {
             m_rects.push_back(currentBlock->getRect());
@@ -105,6 +107,7 @@ void Grid::setGridSize(const int gridSize)
 void Grid::clear()
 {
     m_grid.clear();
+
     for (int i = 0; i < m_gridSize * m_gridSize; ++i)
     {
         m_grid.push_back(nullptr);
@@ -238,6 +241,7 @@ void Grid::draw() const
     int maxSize = Renderer::m_maxSizePerSquare;
     int border = GRID_BORDER;
     int margin = GRID_MARGIN;
+
     for (int i = 0; i < m_gridSize; ++i)
     {
         for (int j = 0; j < m_gridSize; ++j)
@@ -264,6 +268,7 @@ void Grid::drawPreview()
     int margin = GRID_MARGIN;
     int xOffset = (x / 2 - (maxSize * m_gridSize) / 2);
     int yOffset = (y / 2 - (maxSize * m_gridSize) / 2);
+
     for (int yIterator = 0; yIterator < m_gridSize; ++yIterator)
     {
         for (int xIterator = 0; xIterator < m_gridSize; ++xIterator)
@@ -334,6 +339,7 @@ void Grid::showMissingBlocks() const
 
     if (m_counter < 0)
         m_counter = static_cast<int>(m_notPlacedBlocks.size()) - 1;
+
     if (m_counter >= m_notPlacedBlocks.size())
         m_counter = 0;
 
@@ -369,8 +375,10 @@ void Grid::deleteHeap()
 {
     if (m_blocks.empty())
         return;
+
     if (m_notPlacedBlocks.empty())
         return;
+
     for (auto currentBlock : m_blocks)
     {
         delete currentBlock;
@@ -402,6 +410,7 @@ Grid *Grid::generateGrid()
         for (auto currentBlock : notPlacedBlocks)
         {
             SDL_Color currentColor = currentBlock->getColor();
+            
             if (currentColor.r == BLACK.r && currentColor.g == BLACK.g && currentColor.b == BLACK.b &&
                 currentColor.a == BLACK.a)
             {

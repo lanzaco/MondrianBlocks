@@ -13,6 +13,7 @@ set(
         testFileHandlerClass.cpp
         testGridClass.cpp
         testSolverClass.cpp
+        testDifficultyClass.cpp
 )
 
 set(

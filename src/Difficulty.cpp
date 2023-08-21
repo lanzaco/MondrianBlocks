@@ -8,7 +8,7 @@
 int checkSurrounding(const std::vector<Blocks *> &blocks, const std::vector<Blocks *> &grid)
 {
     std::vector<Blocks *> surroundingBlocks;
-    for (auto currentBlock : blocks)
+    for (const auto currentBlock : blocks)
     {
         int x = currentBlock->getX();
         int y = currentBlock->getY();
@@ -83,7 +83,7 @@ int checkSurrounding(const std::vector<Blocks *> &blocks, const std::vector<Bloc
     }
 
     // Erases doubled entries from vector
-    for (auto currentBlock : surroundingBlocks)
+    for (const auto currentBlock : surroundingBlocks)
     {
         auto new_end = std::remove(surroundingBlocks.begin(), surroundingBlocks.end(), currentBlock);
         surroundingBlocks.erase(new_end, surroundingBlocks.end());
