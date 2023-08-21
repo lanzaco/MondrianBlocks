@@ -4,13 +4,6 @@
 
 #include <vector>
 
-enum class difficulty {
-    easy,
-    medium,
-    hard,
-    impossible,
-};
-
 class Grid
 {
 
@@ -32,7 +25,6 @@ public:
     void deleteHeap();
 
     [[nodiscard]] bool checkIfWon() const;
-    difficulty getDifficulty();
     bool gridContainsBlock(const Blocks *block) const;
 
     static void setGridSize(int gridSize);
@@ -42,6 +34,8 @@ public:
     std::vector<SDL_Rect*>* getRectangles();
     std::vector<Blocks*>* getNotPlacedBlocks();
     std::vector<Blocks*>* getGrid();
+
+    static Grid* generateGrid();
 
     static int m_counter;
     static int m_gridSize;

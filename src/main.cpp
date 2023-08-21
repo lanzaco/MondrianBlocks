@@ -1,7 +1,7 @@
-#include <SDL.h>
-
 #include "UserInterface.hpp"
 #include "Renderer.hpp"
+
+#include "SDL.h"
 
 int main(int argc, char *argv[])
 {
