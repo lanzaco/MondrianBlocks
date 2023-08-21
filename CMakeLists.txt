@@ -9,9 +9,6 @@ include(FetchContent)
 
 option(BUILD_SHARED_LIBS "" OFF)
 option(BUILD_SAMPLES "" OFF)
-option(SDL2IMAGE_SAMPLES "" OFF)
-option(SDL2IMAGE_INSTALL "" OFF)
-option(SDL2IMAGE_VENDORED "" ON)
 option(SDL2MIXER_SAMPLES "" OFF)
 option(SDL2MIXER_INSTALL "" OFF)
 option(SDL2MIXER_VENDORED "" ON)
@@ -27,13 +24,6 @@ FetchContent_Declare(
         GIT_TAG release-2.28.2
 )
 FetchContent_MakeAvailable(SDL2)
-
-FetchContent_Declare(
-        SDL2_image
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
-        GIT_TAG release-2.6.3
-)
-FetchContent_MakeAvailable(SDL2_image)
 
 FetchContent_Declare(
         SDL2_ttf
