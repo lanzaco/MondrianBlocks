@@ -14,11 +14,8 @@ protected:
 
     bool isGridEmpty()
     {
-        for(auto iterator : *m_grid.getGrid())
-        {
-            if (iterator != nullptr) return false;
-        }
-        return true;
+        auto grid = *m_grid.getGrid();
+        return std::none_of(grid.cbegin(), grid.cend(), [](Blocks* block){ return block == nullptr;});
     };
     void setUpClearTest()
     {
@@ -40,7 +37,7 @@ protected:
             m_grid.getGrid()->at(positionGrid) = m_grid.getNotPlacedBlocks()->front();
         }
     }
-    Grid setUpEasyGrid()
+    static Grid setUpEasyGrid()
     {
         std::vector<Blocks*> easyBlocks = {};
         easyBlocks.push_back(new Blocks{2,3,1,2,BLACK, false});
@@ -49,7 +46,7 @@ protected:
         Grid easyGrid{easyBlocks};
         return easyGrid;
     }
-    Grid setUpMediumGrid()
+    static Grid setUpMediumGrid()
     {
         std::vector<Blocks*> mediumBlocks = {};
         mediumBlocks.push_back(new Blocks{7,1,1,1,BLACK, false});
@@ -58,7 +55,7 @@ protected:
         Grid mediumGrid{mediumBlocks};
         return mediumGrid;
     }
-    Grid setUpHardGrid()
+    static Grid setUpHardGrid()
     {
         std::vector<Blocks*> hardBlocks = {};
         hardBlocks.push_back(new Blocks{0,2,1,1,BLACK, false});
@@ -67,12 +64,12 @@ protected:
         Grid hardGrid{hardBlocks};
         return hardGrid;
     }
-    Grid setUpImpossibleGrid()
+    static Grid setUpImpossibleGrid()
     {
         std::vector<Blocks*> impossibleBlocks = {};
         impossibleBlocks.push_back(new Blocks{5,2,1,1,BLACK, false});
         impossibleBlocks.push_back(new Blocks{3,2,1,2,BLACK, false});
-        impossibleBlocks.push_back(new Blocks{1,4,3,1,BLACK, false});
+        impossibleBlocks.push_back(new Blocks{1,5,3,1,BLACK, false});
         Grid impossibleGrid{impossibleBlocks};
         return impossibleGrid;
     }

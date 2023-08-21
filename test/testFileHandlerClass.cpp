@@ -9,7 +9,7 @@ protected:
 
 TEST_F(FileHandlerTest, TestSizeOfGridList)
 {
-    ASSERT_EQ(5, m_fileHandler.readFile("./../../data/data_file.txt").size());
+    ASSERT_EQ(6, m_fileHandler.readFile("./../../data/data_file.txt").size());
 }
 
 TEST_F(FileHandlerTest, TestSizeOfGridListEmptyFile)

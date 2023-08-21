@@ -155,23 +155,17 @@ void Renderer::drawTriangle(float x, float y, float width, float height,
     }
     SDL_SetRenderDrawColor(Renderer::m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
 
-    int intX = static_cast<int>(x);
-    int intY = static_cast<int>(y);
-    int intWidth = static_cast<int>(width);
-    int intHeight = static_cast<int>(height);
-
-    int numberVertices = static_cast<int>(triangle.size());
-
-    SDL_Rect triangleRect{intX, intY, intWidth, intHeight};
-    SDL_RenderGeometry(Renderer::m_renderer, nullptr, triangle.data(), numberVertices, nullptr, 0);
-    SDL_RenderDrawRect(Renderer::m_renderer, &triangleRect);
+    SDL_RenderGeometry(Renderer::m_renderer, nullptr, triangle.data(), static_cast<int>(triangle.size()), nullptr, 0);
 }
 
 SDL_Rect Renderer::drawButton(const std::string &text, alignment alignment, SDL_Color color, int x, int y)
 {
     auto rectangle = drawText(text, alignment, color, x, y);
-    SDL_SetRenderDrawColor(Renderer::m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
-    SDL_RenderDrawRect(Renderer::m_renderer, &rectangle);
+    SDL_SetRenderDrawColor(m_renderer, WHITE.r, WHITE.g, WHITE.b, WHITE.a);
+    SDL_RenderFillRect(m_renderer, &rectangle);
+    SDL_SetRenderDrawColor(m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+    SDL_RenderDrawRect(m_renderer, &rectangle);
+    drawText(text, alignment, color, x, y);
     return rectangle;
 }
 
@@ -236,15 +230,15 @@ void Renderer::drawCrown(float x, float y, float width, float height)
     Renderer::drawTriangle(x + width, y,width, height, UP, YELLOW);
 
     SDL_SetRenderDrawColor(Renderer::m_renderer, RED.r, RED.g, RED.b, RED.a);
-    Renderer::drawCircle(Renderer::m_renderer, 640, 510, 10);
-    Renderer::drawCircle(Renderer::m_renderer, 780, 510, 10);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 70, static_cast<int>(y) + 110, 10);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 140, static_cast<int>(y) + 110, 10);
     SDL_SetRenderDrawColor(Renderer::m_renderer, BLUE.r, BLUE.g, BLUE.b, BLUE.a);
-    Renderer::drawCircle(Renderer::m_renderer, 710, 510, 10);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 210, static_cast<int>(y) + 110, 10);
 
     SDL_SetRenderDrawColor(Renderer::m_renderer, YELLOW.r, YELLOW.g, YELLOW.b, YELLOW.a);
-    Renderer::drawCircle(Renderer::m_renderer, 640, 390, 20);
-    Renderer::drawCircle(Renderer::m_renderer, 710, 390, 20);
-    Renderer::drawCircle(Renderer::m_renderer, 780, 390, 20);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 70, static_cast<int>(y) - 10, 20);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 140, static_cast<int>(y) - 10, 20);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 210, static_cast<int>(y) - 10, 20);
 }
 
 void Renderer::drawCircle(SDL_Renderer * renderer, int x, int y, int radius)

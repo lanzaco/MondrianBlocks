@@ -2,12 +2,14 @@
 #include "Renderer.hpp"
 #include "Colors.hpp"
 #include "Defines.hpp"
+#include "Solver.hpp"
 
 #include <utility>
 #include <tuple>
 #include <vector>
 #include <algorithm>
 #include <stdexcept>
+#include <random>
 
 int Grid::m_gridSize = 8;
 
@@ -282,10 +284,6 @@ void Grid::drawPreview()
         SDL_Rect previewRect = {xPosition, yPosition, width, height};
         Renderer::drawRectWithBoarder(previewRect, currentBlock->getColor());
     }
-    difficulty difficulty = getDifficulty();
-    if (difficulty == difficulty::easy) Renderer::drawText("Easy", BOTTOM_LEFT, BLACK);
-    if (difficulty == difficulty::medium) Renderer::drawText("Medium", BOTTOM_LEFT, BLACK);
-    if (difficulty == difficulty::hard) Renderer::drawText("Hard", BOTTOM_LEFT, BLACK);
 }
 
 void Grid::moveBlock(Blocks* block)
@@ -351,62 +349,6 @@ bool Grid::checkIfWon() const
                                 [](Blocks *block) { return block == nullptr; });
 }
 
-int checkSurrounding(Blocks block1, Blocks block2)
-{
-    int counter = 0;
-    int x1 = block1.getX();
-    int y1 = block1.getY();
-    int x2 = block2.getX();
-    int y2 = block2.getY();
-    int sizeX1 = block1.getSizeX();
-    int sizeY1 = block1.getSizeY();
-    int sizeX2 = block2.getSizeX();
-    int sizeY2 = block2.getSizeY();
-    int distanceX = abs((x1 + sizeX1) - (x2 + sizeX2));
-    int distanceY = abs((y1 + sizeY1) - (y2 + sizeY2));
-
-    if (distanceY < std::max(sizeY1, sizeY2) && distanceX == 2) counter++;
-    if (distanceX < std::max(sizeX1, sizeX2) && distanceY == 2) counter++;
-
-    return counter;
-}
-
-int checkBoarder(Blocks block, int gridSize)
-{
-    int counter = 0;
-    int x = block.getX();
-    int y = block.getY();
-    int sizeX = block.getSizeX();
-    int sizeY = block.getSizeY();
-
-    if (x == 1 && y == 1) counter += 2;
-    else if (x == 1 || y == 1) ++counter;
-    if (x + sizeX == gridSize - 1 && y + sizeY == gridSize - 1) counter += 2;
-    else if (x + sizeX == gridSize - 1 || y + sizeY == gridSize - 1) ++counter;
-    return counter;
-}
-
-difficulty Grid::getDifficulty()
-{
-    int difficultyAsInt = 0;
-    Blocks *block1 = m_blocks.at(0);
-    Blocks *block2 = m_blocks.at(1);
-    Blocks *block3 = m_blocks.at(2);
-
-    difficultyAsInt += checkSurrounding(*block1, *block2);
-    difficultyAsInt += checkSurrounding(*block1, *block3);
-    difficultyAsInt += checkSurrounding(*block3, *block2);
-
-    difficultyAsInt += checkBoarder(*block1, m_gridSize);
-    difficultyAsInt += checkBoarder(*block2, m_gridSize);
-    difficultyAsInt += checkBoarder(*block3, m_gridSize);
-
-    if (difficultyAsInt == 0) return difficulty::hard;
-    if (difficultyAsInt == 1) return difficulty::medium;
-    if (difficultyAsInt == 2) return difficulty::easy;
-    return difficulty::impossible;
-}
-
 bool Grid::gridContainsBlock(const Blocks *block) const
 {
     return std::ranges::any_of(m_grid.cbegin(), m_grid.cend(),
@@ -429,4 +371,41 @@ void Grid::deleteHeap()
         delete currentBlock;
     }
     m_notPlacedBlocks.clear();
+}
+
+Grid* Grid::generateGrid()
+{
+    auto grid = new Grid;
+    Solver solver;
+    Grid solvedGrid;
+    std::random_device device;
+    std::mt19937 generator(device());
+    std::uniform_int_distribution<int> distribution(0, 7);
+    std::uniform_int_distribution<int> rotation(0, 1);
+
+    do {
+        Grid tmpGrid{};
+        auto notPlacedBlocks = *(tmpGrid.getNotPlacedBlocks());
+
+        for (auto currentBlock: notPlacedBlocks) {
+            SDL_Color currentColor = currentBlock->getColor();
+            if (currentColor.r == BLACK.r && currentColor.g == BLACK.g && currentColor.b == BLACK.b &&
+                currentColor.a == BLACK.a) {
+                do {
+                    int xCoordinate = distribution(generator);
+                    int yCoordinate = distribution(generator);
+                    int rotated = rotation(generator);
+                    currentBlock->setX(xCoordinate);
+                    currentBlock->setY(yCoordinate);
+                    currentBlock->setRotate(rotated);
+                    currentBlock->updateRect();
+                } while (!(tmpGrid.checkIfPlaceable(currentBlock)));
+                tmpGrid.placeBlock(currentBlock);
+            }
+        }
+        solvedGrid = solver.recursiveSolver(tmpGrid);
+        *grid = tmpGrid;
+    } while (!(solvedGrid.checkIfWon()));
+    Solver::cleanUpGrid(grid);
+    return grid;
 }

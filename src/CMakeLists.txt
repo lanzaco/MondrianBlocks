@@ -9,6 +9,7 @@ set(
         FileHandler.cpp
         Game.cpp
         UserInterface.cpp
+        Difficulty.cpp
 )
 
 set(
@@ -22,6 +23,7 @@ set(
         FileHandler.hpp
         Game.hpp
         UserInterface.hpp
+        Difficulty.hpp
 )
 
 add_library(Code)

@@ -17,6 +17,7 @@ public:
 
     Blocks *findSelectedBlock(const std::vector<Blocks *> *blocks) const;
     void rotateSelectedBlock();
+    Grid* makeOwnGrid();
 
     bool run(Grid *grid);
 protected:
