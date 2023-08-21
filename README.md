@@ -111,7 +111,7 @@ Die Komplexität ist in 4 Stufen unterteilt: _Easy, Medium, Hard, Impossible_. D
  
 **Impossible:** Es existieren 3 oder mehr Lücken der Größe 1, die nicht mit den beiden Blöcken befüllt werden können. Somit gibt es immer eine Lücke, die durch keinen Block gefüllt werden kann. das Spielfeld ist somit unlösbar.\
 <ins>Beispiel</ins>:\
-<img src = "/pictures/EasyGrid.png"
+<img src = "/pictures/ImpossibleGrid.png"
 	width = "200"
 	height = "200"/>
 
