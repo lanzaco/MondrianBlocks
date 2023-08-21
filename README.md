@@ -1,4 +1,4 @@
-# **++Abschlussprojekt++**
+# **<ins>Abschlussprojekt</ins>**
 ### _Mondrian Blocks_
 
 &nbsp;
@@ -36,15 +36,15 @@ Beispiel:
 
 Für die Erstellung eines User Inferfaces wurden folgende Bibliotheken eingebunden:
 
-- SDL:
+- [SDL](https://github.com/libsdl-org/SDL):
 	- Erstellen eines graphical user interfaces (GUI), auf dem gespielt wird.
-- SDL_ttf:
+- [SDL_ttf](https://github.com/libsdl-org/SDL_ttf):
 	- Einbinden von Textfeldern in die GUI.
 	
 
 ### Umsetzung Spielfeld
 
-Es gibt 11 verschiedene Blöcke, die in einem Spielfeld plaziert werden müssen: 3 schwarze Blöcke, die zu Beginn plaziert sind; 8 farbige Blöcke, die vom Spieler plaziert werden.
+Es gibt **11** verschiedene Blöcke, die in einem Spielfeld plaziert werden müssen: 3 schwarze Blöcke, die zu Beginn plaziert sind; 8 farbige Blöcke, die vom Spieler plaziert werden.
 Ein Spielfeld wird implementiert in der Klasse _Grid_. Jedes Spielfeld beinhaltet:
 &nbsp;- Vector an Blöcken, die sich im Grid befinden
 &nbsp;- Vector an Blöcken, die noch nicht plaziert wurden
@@ -70,11 +70,12 @@ Nach beenden des Spiels folgt eine UserIterface-Funktion _wonGame_, die den Spie
 
 **Button Solver &rarr;** &nbsp;Die Solver-Funktion wird nun gestartet. Für diesen Spielmodus ist die Klasse UserInterface selbst zuständig. Ausgeführt wird das automatische Finden einer Lösung von der Klasse _Solver_. Die Funktion _createSolverMenu_ generiert ein neues Menü, welches die Auswahlmöglichkeiten mehrerer Spielfelder erlaubt. Es ist dasselbe Menü, wie auch im Spielmodus **Play**. Mit dem Unterschied, dass bei Auswahl eines Spielfeldes direkt die Lösung und die Abfrage, ob erneut gespielt werden soll, erscheint. Die getätigte Auswahl wird an _showMenu_ zurückgegeben. Abhängig von der Auswahl wird erneut gespielt oder das Spiel wird beendet.
 
-++Ablauf der Funktionen:++
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_showMenu_ (& choose grid)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#129159;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#129158;
-_Game::run_&nbsp;&nbsp;_createSolverMenu_
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#129158;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#129159;
+<ins>Ablauf der Funktionen:</ins>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_showMenu_ (& choose grid)\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#129159;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#129158;\
+_Game::run_&nbsp;&nbsp;_createSolverMenu_\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#129158;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#129159;\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_showMenu_
 
 Alle Funtionen, die ein User Interface bzw. ein Menü erstellen, verlaufen nach demselben Prinzip:
@@ -84,14 +85,14 @@ Alle Funtionen, die ein User Interface bzw. ein Menü erstellen, verlaufen nach 
 
 Die Komplexität ist in 4 Stufen unterteilt: _Easy, Medium, Hard, Impossible_. Die Schwierigkeit ist abhängig davon, wie viele Lücken in der Größe von einem Kästchen existieren. Bei Lücken dieser Größe ist klar, dass dort einer der Blöcke mit der Breite _**1**_ plaziert werden müssen. Dies erleichert den Start und weiteren Verlauf des Spiels. 
 
-**Easy:** &nbsp;Es existieren zwei Lücken der Größe 1. Darum können beide Blöcke mit der Breite 1 direkt zu Beginn plaziert werden.
-++Beispiel:++
-**Medium:**&nbsp; Es existiert eine Lücke der Größe 1. Es kann zu Beginn einer der beiden Blöcke plaziert werden.
-++Beispiel:++
-**Hard:**&nbsp; Es existiert keine Lücke der Größe 1. Keiner der beiden Blöcke kann zu Beginn plaziert werden.
-++Beispiel:++
-**Impossible:** Es existieren 3 oder mehr Lücken der Größe 1, die nicht mit den beiden Blöcken befüllt werden können. Somit gibt es immer eine Lücke, die durch keinen Block gefüllt werden kann. das Spielfeld ist somit unlösbar.
-++Beispiel:++
+**Easy:** &nbsp;Es existieren zwei Lücken der Größe 1. Darum können beide Blöcke mit der Breite 1 direkt zu Beginn plaziert werden.\
+<ins> Beispiel: </ins>\
+**Medium:**&nbsp; Es existiert eine Lücke der Größe 1. Es kann zu Beginn einer der beiden Blöcke plaziert werden.\
+<ins>Beispiel: </ins>\
+**Hard:**&nbsp; Es existiert keine Lücke der Größe 1. Keiner der beiden Blöcke kann zu Beginn plaziert werden.\
+<ins>Beispiel: </ins>\
+**Impossible:** Es existieren 3 oder mehr Lücken der Größe 1, die nicht mit den beiden Blöcken befüllt werden können. Somit gibt es immer eine Lücke, die durch keinen Block gefüllt werden kann. das Spielfeld ist somit unlösbar.\
+<ins>Beispiel</ins>:
 
 Die Ermittlung der Schwierigkeit findet in einer eigenen Klasse _Difficulty_ statt. Logisch kann sie jedoch der Klasse _Grid_ zugeordnet werden. 
 
@@ -122,13 +123,13 @@ Jeder Block wird hochkant angezeigt, kann aber rotiert werden durch Drücken der
 ### Hinweise
 
 1. Das erste Ausführen des Projekt kann unter Umständen ein paar Minuten in Anspruch nehmen, 
-da zunächst alle Bibliotheken gebuildet werden müssen.
-2. Die nötigen Bibliotheken, sowie GoggleTests werden im building-Prozess von GitHub geklont.
-3. Das Projekt sollte im *release* ausgeführt, werden, da die Performance deutlich besser ist im Vergleich zu *debug*.
+da zunächst alle Bibliotheken gebuildet werden müssen.\
+2. Die nötigen Bibliotheken, sowie GoggleTests werden im building-Prozess von GitHub geklont.\
+3. Das Projekt sollte im *release* ausgeführt, werden, da die Performance deutlich besser ist im Vergleich zu *debug*.\
 
 ### Team
-Benni Stauder: [Github](https://github.com/Benni-Stauder)
-Concetta Lanza: [Github](https://github.com/lanzaco)
-Annika Jung: [Github] (https://github.com/annikajung)
+Benni Stauder: [Github](https://github.com/Benni-Stauder)\
+Concetta Lanza: [Github](https://github.com/lanzaco)\
+Annika Jung: [Github](https://github.com/annikajung)
 
 
