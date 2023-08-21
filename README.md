@@ -102,8 +102,8 @@ Sämtliche graphischen Klassen bzw. Funktionen besitzen keine Tests, da dahinter
 
 # Spielanleitung
 
-1. Bei Start des Programms öffnet sich das Spielfenster und es kann zwischen zwei Modi gewählte werden : _Play, Solve_.
-**Play** &rarr; der Spieler hat die Möglichekit eigenständig ein Spielfeld zu lösen.
+1. Bei Start des Programms öffnet sich das Spielfenster und es kann zwischen zwei Modi gewählte werden : _Play, Solve_.\
+**Play** &rarr; der Spieler hat die Möglichekit eigenständig ein Spielfeld zu lösen.\
 **Solver** &rarr; der Spieler kann ein Spielfeld von einem automatischen Solver "_Löser_ " lösen lassen.
 
 2. Bei beiden Optionen öffnet sich ein neues Menü. Es gibt die Möglichkeit eines der vorgegebenen Spielfelder zu lösen bzw. lösen zu lassen. 
