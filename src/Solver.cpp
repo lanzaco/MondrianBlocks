@@ -24,19 +24,24 @@ Grid Solver::recursiveSolver(Grid grid)
         {
             currentBlock->setRotate(false);
         }
+
         for (int yIterator = 0; yIterator < Grid::getGridSize() - sizeY; ++yIterator)
         {
             currentBlock->setY(yIterator);
+
             for (int xIterator = 0; xIterator < Grid::getGridSize() - sizeX; ++xIterator)
             {
                 currentBlock->setX(xIterator);
                 currentBlock->updateRect();
+
                 if (grid.checkIfPlaceable(currentBlock))
                 {
                     grid.placeBlock(currentBlock);
+
                     if (grid.getNotPlacedBlocks()->empty())
                         return grid;
                     Grid newGrid = recursiveSolver(grid);
+
                     if (newGrid.getNotPlacedBlocks()->empty())
                         return newGrid;
                 }
@@ -49,6 +54,7 @@ Grid Solver::recursiveSolver(Grid grid)
 void Solver::cleanUpGrid(Grid *grid)
 {
     auto notPlacedBlocks = *grid->getNotPlacedBlocks();
+
     for (auto currentBlock : notPlacedBlocks)
     {
         auto new_end = std::remove(notPlacedBlocks.begin(), notPlacedBlocks.end(), currentBlock);
@@ -59,6 +65,7 @@ void Solver::cleanUpGrid(Grid *grid)
     }
 
     auto placedBlocks = *grid->getBlocks();
+
     for (auto currentBlock : placedBlocks)
     {
         auto new_end = std::remove(placedBlocks.begin(), placedBlocks.end(), currentBlock);
@@ -68,6 +75,7 @@ void Solver::cleanUpGrid(Grid *grid)
     }
 
     auto rectangles = *grid->getRectangles();
+
     for (auto currentReact : rectangles)
     {
         auto new_end = std::remove(rectangles.begin(), rectangles.end(), currentReact);

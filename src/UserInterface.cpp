@@ -53,6 +53,7 @@ void UserInterface::showMenu()
             {
                 delete grid;
                 grid = chooseGrid();
+
                 if (grid != nullptr)
                 {
                     Game game;
@@ -64,6 +65,7 @@ void UserInterface::showMenu()
             {
                 delete grid;
                 grid = chooseGrid();
+
                 if (grid != nullptr)
                 {
                     quit = !solverMenu(grid);
@@ -73,6 +75,7 @@ void UserInterface::showMenu()
 
         SDL_RenderPresent(Renderer::m_renderer);
     }
+
     if (grid != nullptr)
     {
         grid->deleteHeap();
@@ -127,12 +130,16 @@ Grid* UserInterface::chooseGrid()
         SDL_Rect rectBack = Renderer::drawButton("Back", TOP_RIGHT, BLACK);
         SDL_Rect rectMakeOwnGrid = Renderer::drawButton("Create", BOTTOM_LEFT, BLACK);
 
-        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
-            if (SDL_PointInRect(&mousePosition, &leftTriangle)) {
+        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) 
+        {
+
+            if (SDL_PointInRect(&mousePosition, &leftTriangle)) 
+            {
                 --counter;
             }
 
-            if (SDL_PointInRect(&mousePosition, &rightTriangle)) {
+            if (SDL_PointInRect(&mousePosition, &rightTriangle)) 
+            {
                 ++counter;
             }
 
@@ -140,8 +147,11 @@ Grid* UserInterface::chooseGrid()
 
             if (counter >= static_cast<int>(grids.size())) counter = 0;
 
-            if (SDL_PointInRect(&mousePosition, &rectChoose)) {
-                for (auto currentGrid : grids) {
+            if (SDL_PointInRect(&mousePosition, &rectChoose)) 
+            {
+
+                for (auto currentGrid : grids) 
+                {
                     if (currentGrid != grids.at(counter))
                     {
                         delete currentGrid;
@@ -150,18 +160,22 @@ Grid* UserInterface::chooseGrid()
                 return grids.at(counter);
             }
 
-            if (SDL_PointInRect(&mousePosition, &rectGenerateNewGrid)) {
+            if (SDL_PointInRect(&mousePosition, &rectGenerateNewGrid)) 
+            {
                 grids.push_back(Grid::generateGrid());
                 counter = static_cast<int>(grids.size()) - 1;
             }
 
-            if (SDL_PointInRect(&mousePosition, &rectBack)) {
+            if (SDL_PointInRect(&mousePosition, &rectBack))
+            {
                 quit = true;
             }
 
-            if (SDL_PointInRect(&mousePosition, &rectMakeOwnGrid)) {
+            if (SDL_PointInRect(&mousePosition, &rectMakeOwnGrid)) 
+            {
                 Game generateGridGame{};
                 Grid *grid = generateGridGame.makeOwnGrid();
+
                 if (grid != nullptr)
                 {
                     grids.push_back(grid);
@@ -177,7 +191,9 @@ Grid* UserInterface::chooseGrid()
         if (difficulty == difficulty::hard) Renderer::drawText("Hard", TOP_LEFT, BLACK);
         SDL_RenderPresent(Renderer::m_renderer);
     }
-    for (auto currentGrid : grids) {
+
+    for (auto currentGrid : grids) 
+    {
         delete currentGrid;
     }
     return nullptr;
@@ -212,7 +228,8 @@ bool UserInterface::wonGame()
             m_quit = true;
         }
 
-        if (event.type == SDL_MOUSEMOTION) {
+        if (event.type == SDL_MOUSEMOTION)
+        {
             mousePosition = {event.motion.x, event.motion.y};
         }
 
@@ -261,6 +278,7 @@ bool UserInterface::solverMenu(Grid *grid)
         }
 
         Renderer::fillBackground(GRAY);
+        
         if (isSolvable)
         {
             solvedGrid.drawPreview();
