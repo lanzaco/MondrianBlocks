@@ -13,13 +13,13 @@ public:
     ~Grid() = default;
 
     void clear();
-    bool checkIfPlaceable(Blocks* block) const;
-    void placeBlock(Blocks* block);
-    void removeBlock(Blocks* block);
+    bool checkIfPlaceable(Blocks *block) const;
+    void placeBlock(Blocks *block);
+    void removeBlock(Blocks *block);
     void updateRectangles();
     void draw() const;
     void drawPreview();
-    void moveBlock(Blocks* block);
+    void moveBlock(Blocks *block);
     void showMissingBlocks() const;
 
     void deleteHeap();
@@ -30,15 +30,16 @@ public:
     static void setGridSize(int gridSize);
 
     static int getGridSize();
-    std::vector<Blocks*>* getBlocks();
-    std::vector<SDL_Rect*>* getRectangles();
-    std::vector<Blocks*>* getNotPlacedBlocks();
-    std::vector<Blocks*>* getGrid();
+    std::vector<Blocks *> *getBlocks();
+    std::vector<SDL_Rect *> *getRectangles();
+    std::vector<Blocks *> *getNotPlacedBlocks();
+    std::vector<Blocks *> *getGrid();
 
-    static Grid* generateGrid();
+    static Grid *generateGrid();
 
     static int m_counter;
     static int m_gridSize;
+
 private:
     std::vector<Blocks *> m_grid;
     std::vector<Blocks *> m_blocks;

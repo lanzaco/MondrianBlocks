@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "../src/FileHandler.hpp"
 
-class FileHandlerTest : public::testing::Test
+class FileHandlerTest : public ::testing::Test
 {
 protected:
     FileHandler m_fileHandler{};
@@ -40,7 +40,7 @@ TEST_F(FileHandlerTest, TestGridSizeEmptyFile)
 
 TEST_F(FileHandlerTest, TestSizeOfGridListWrongPath)
 {
-    ASSERT_EQ(0,m_fileHandler.readFile("./wrong_path.txt").size());
+    ASSERT_EQ(0, m_fileHandler.readFile("./wrong_path.txt").size());
 }
 
 TEST(FileHandlerTest_2, TestSetGridSize)
@@ -56,4 +56,3 @@ TEST(FileHandlerTest_2, TestSetGridSize)
     // has to be set back to 8 for the following tests
     Grid::setGridSize(8);
 }
-

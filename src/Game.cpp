@@ -7,11 +7,12 @@
 #include <vector>
 
 Game::Game()
-        :m_quit(false)
-        ,m_leftMouseButtonPressed(false)
-        ,m_mousePosition({0, 0})
-        ,m_clickOffset({0, 0})
-        ,m_selectedRect(nullptr), m_selectedBlock(nullptr)
+    : m_quit(false)
+    , m_leftMouseButtonPressed(false)
+    , m_mousePosition({0, 0})
+    , m_clickOffset({0, 0})
+    , m_selectedRect(nullptr)
+    , m_selectedBlock(nullptr)
 {
 }
 
@@ -200,9 +201,9 @@ bool Game::run(Grid *grid)
     return playAgain;
 }
 
-Grid* Game::makeOwnGrid()
+Grid *Game::makeOwnGrid()
 {
-    Grid* grid = new Grid;
+    Grid *grid = new Grid;
     std::vector<SDL_Rect *> *rectangles;
     std::vector<Blocks *> *blocks;
     std::vector<Blocks *> *notPlacedBlocks;
@@ -211,7 +212,7 @@ Grid* Game::makeOwnGrid()
     SDL_Rect rectFinish = Renderer::drawButton("Finish", BOTTOM_RIGHT, BLACK);
 
     rectangles = grid->getRectangles();
-    blocks  = grid->getBlocks();
+    blocks = grid->getBlocks();
     notPlacedBlocks = grid->getNotPlacedBlocks();
     for (auto currentBlock : *notPlacedBlocks)
     {
@@ -220,7 +221,8 @@ Grid* Game::makeOwnGrid()
         if (!isBlack)
         {
             tmpNotPlacedBlocks->push_back(currentBlock);
-        } else
+        }
+        else
         {
             tmpBlackBlocks->push_back(currentBlock);
         }
@@ -306,7 +308,8 @@ Grid* Game::makeOwnGrid()
             Renderer::drawRectWithBoarder(m_selectedBlock);
         }
 
-        if (notPlacedBlocks->empty()) {
+        if (notPlacedBlocks->empty())
+        {
             rectFinish = Renderer::drawButton("Finish", BOTTOM_RIGHT, BLACK);
         }
 

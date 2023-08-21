@@ -17,9 +17,10 @@ public:
 
     Blocks *findSelectedBlock(const std::vector<Blocks *> *blocks) const;
     void rotateSelectedBlock();
-    Grid* makeOwnGrid();
+    Grid *makeOwnGrid();
 
     bool run(Grid *grid);
+
 protected:
 private:
     bool m_quit;

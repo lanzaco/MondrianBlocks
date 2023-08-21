@@ -1,8 +1,7 @@
 #include "gtest/gtest.h"
 #include "../src/Blocks.hpp"
 
-
-class BlockClassTest : public::testing::Test
+class BlockClassTest : public ::testing::Test
 {
 protected:
     Blocks m_block{};
@@ -41,5 +40,3 @@ TEST_F(BlockClassTest, GetNewCoords)
     ASSERT_EQ(x, 1);
     ASSERT_EQ(y, 1);
 }
-
-

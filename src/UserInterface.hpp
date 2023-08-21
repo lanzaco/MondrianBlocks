@@ -2,12 +2,14 @@
 
 #include "Grid.hpp"
 
-class UserInterface {
+class UserInterface
+{
 public:
     static void showMenu();
-    static Grid* chooseGrid();
+    static Grid *chooseGrid();
     static bool wonGame();
     static bool solverMenu(Grid *grid);
+
 private:
     static bool m_quit;
 };

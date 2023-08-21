@@ -2,14 +2,16 @@
 
 #include "Grid.hpp"
 
-enum class difficulty {
+enum class difficulty
+{
     easy,
     medium,
     hard,
     impossible,
 };
 
-class Difficulty {
+class Difficulty
+{
 public:
-    static difficulty getDifficulty(Grid* grid);
+    static difficulty getDifficulty(Grid *grid);
 };

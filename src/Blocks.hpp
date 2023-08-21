@@ -25,6 +25,7 @@ public:
     void rotate();
 
     std::pair<int, int> getNewCoords();
+
 private:
     int m_x;
     int m_y;
