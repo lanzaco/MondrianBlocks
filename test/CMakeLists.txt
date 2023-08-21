@@ -18,9 +18,9 @@ set(
 
 set(
         assets
-        ../src/data/data_file.txt
-        ../src/data/empty_file.txt
-        ../src/data/file_setsGridSizeTo_7.txt
+        ../data/data_file.txt
+        ../data/empty_file.txt
+        ../data/file_setsGridSizeTo_7.txt
 )
 
 add_executable(
