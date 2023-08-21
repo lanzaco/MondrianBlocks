@@ -5,12 +5,13 @@
 #include <tuple>
 
 Blocks::Blocks(int x, int y, int sizeX, int sizeY, SDL_Color color, bool isRotated)
-        :m_x(x), m_y(y)
-        ,m_sizeX(sizeX)
-        ,m_sizeY(sizeY)
-        ,m_isRotated(isRotated)
-        ,m_color(color)
-        ,m_rect()
+    : m_x(x)
+    , m_y(y)
+    , m_sizeX(sizeX)
+    , m_sizeY(sizeY)
+    , m_isRotated(isRotated)
+    , m_color(color)
+    , m_rect()
 {
     updateRect();
 }
@@ -45,7 +46,7 @@ SDL_Color Blocks::getColor() const
     return m_color;
 }
 
-SDL_Rect* Blocks::getRect()
+SDL_Rect *Blocks::getRect()
 {
     return &m_rect;
 }
@@ -75,7 +76,7 @@ std::pair<int, int> Blocks::getNewCoords()
     int x = static_cast<int>(round(fx));
     int y = static_cast<int>(round(fy));
 
-    return {x,y};
+    return {x, y};
 }
 
 void Blocks::setX(int x)
@@ -96,8 +97,8 @@ void Blocks::rotate()
     int height = m_rect.h;
     int width = m_rect.w;
 
-    //this is used to suppress the clang-tidy warning
-    //else it thinks local variables are unused
+    // this is used to suppress the clang-tidy warning
+    // else it thinks local variables are unused
     SDL_Rect tmpRect{x, y, height, width};
 
     m_rect = tmpRect;

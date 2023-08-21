@@ -11,15 +11,15 @@
 // thus breaking the program with a division by zero error
 int Renderer::m_maxSizePerSquare{1};
 
-SDL_Window* Renderer::m_window{nullptr};
+SDL_Window *Renderer::m_window{nullptr};
 
-SDL_Renderer* Renderer::m_renderer{nullptr};
+SDL_Renderer *Renderer::m_renderer{nullptr};
 
-TTF_Font* Renderer::m_font{nullptr};
+TTF_Font *Renderer::m_font{nullptr};
 
 void Renderer::init()
 {
-    //renderer already initialized
+    // renderer already initialized
     if (m_renderer != nullptr)
     {
         return;
@@ -35,7 +35,13 @@ void Renderer::init()
         throw std::invalid_argument("Cant initialize SDL_ttf");
     }
 
-    m_font = TTF_OpenFont("./../../data/OpenSans.ttf", 100);
+#if _MSC_VER && !__INTEL_COMPILER
+    const char filePath[] = "./../OpenSans.ttf";
+#else
+    const char filePath[] = "./OpenSans.ttf";
+#endif
+
+    m_font = TTF_OpenFont(filePath, 100);
     if (m_font == nullptr)
     {
         throw std::invalid_argument("Cant open the font");
@@ -66,7 +72,7 @@ void Renderer::init()
         throw std::invalid_argument("SDL2 could not create the renderer");
     }
 
-    //update all for logic used variables based on window size
+    // update all for logic used variables based on window size
     windowSizeChanged();
 }
 
@@ -117,7 +123,7 @@ void Renderer::windowSizeChanged()
 void Renderer::drawRectWithBoarder(Blocks *block)
 {
     SDL_Color color = block->getColor();
-    SDL_Rect* rect = block->getRect();
+    SDL_Rect *rect = block->getRect();
     SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
     SDL_RenderFillRect(m_renderer, rect);
     SDL_SetRenderDrawColor(m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
@@ -132,57 +138,51 @@ void Renderer::drawTriangle(float x, float y, float width, float height,
     switch (orientation)
     {
 
-        case UP:
-            triangle.push_back({SDL_FPoint{x + width/2, y}, color, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x, y + height}, color, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x + width, y + height}, color, SDL_FPoint{0}});
-            break;
-        case RIGHT:
-            triangle.push_back({SDL_FPoint{x + width, y + height/2}, color, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x, y}, color, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x, y + height}, color, SDL_FPoint{0}});
-            break;
-        case DOWN:
-            triangle.push_back({SDL_FPoint{x + width/2, y + height}, color, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x, y}, color, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x + width, y}, color, SDL_FPoint{0}});
-            break;
-        case LEFT:
-            triangle.push_back({SDL_FPoint{x, y + height/2}, color, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x + width, y + height}, color, SDL_FPoint{0}});
-            triangle.push_back({SDL_FPoint{x + width, y}, color, SDL_FPoint{0}});
-            break;
+    case UP:
+        triangle.push_back({SDL_FPoint{x + width / 2, y}, color, SDL_FPoint{0}});
+        triangle.push_back({SDL_FPoint{x, y + height}, color, SDL_FPoint{0}});
+        triangle.push_back({SDL_FPoint{x + width, y + height}, color, SDL_FPoint{0}});
+        break;
+    case RIGHT:
+        triangle.push_back({SDL_FPoint{x + width, y + height / 2}, color, SDL_FPoint{0}});
+        triangle.push_back({SDL_FPoint{x, y}, color, SDL_FPoint{0}});
+        triangle.push_back({SDL_FPoint{x, y + height}, color, SDL_FPoint{0}});
+        break;
+    case DOWN:
+        triangle.push_back({SDL_FPoint{x + width / 2, y + height}, color, SDL_FPoint{0}});
+        triangle.push_back({SDL_FPoint{x, y}, color, SDL_FPoint{0}});
+        triangle.push_back({SDL_FPoint{x + width, y}, color, SDL_FPoint{0}});
+        break;
+    case LEFT:
+        triangle.push_back({SDL_FPoint{x, y + height / 2}, color, SDL_FPoint{0}});
+        triangle.push_back({SDL_FPoint{x + width, y + height}, color, SDL_FPoint{0}});
+        triangle.push_back({SDL_FPoint{x + width, y}, color, SDL_FPoint{0}});
+        break;
     }
     SDL_SetRenderDrawColor(Renderer::m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
 
-    int intX = static_cast<int>(x);
-    int intY = static_cast<int>(y);
-    int intWidth = static_cast<int>(width);
-    int intHeight = static_cast<int>(height);
-
-    int numberVertices = static_cast<int>(triangle.size());
-
-    SDL_Rect triangleRect{intX, intY, intWidth, intHeight};
-    SDL_RenderGeometry(Renderer::m_renderer, nullptr, triangle.data(), numberVertices, nullptr, 0);
-    SDL_RenderDrawRect(Renderer::m_renderer, &triangleRect);
+    SDL_RenderGeometry(Renderer::m_renderer, nullptr, triangle.data(), static_cast<int>(triangle.size()), nullptr, 0);
 }
 
 SDL_Rect Renderer::drawButton(const std::string &text, alignment alignment, SDL_Color color, int x, int y)
 {
     auto rectangle = drawText(text, alignment, color, x, y);
-    SDL_SetRenderDrawColor(Renderer::m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
-    SDL_RenderDrawRect(Renderer::m_renderer, &rectangle);
+    SDL_SetRenderDrawColor(m_renderer, WHITE.r, WHITE.g, WHITE.b, WHITE.a);
+    SDL_RenderFillRect(m_renderer, &rectangle);
+    SDL_SetRenderDrawColor(m_renderer, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+    SDL_RenderDrawRect(m_renderer, &rectangle);
+    drawText(text, alignment, color, x, y);
     return rectangle;
 }
 
-SDL_Rect Renderer::drawText(const std::string& text, alignment alignment, SDL_Color color, int x, int y)
+SDL_Rect Renderer::drawText(const std::string &text, alignment alignment, SDL_Color color, int x, int y)
 {
     int windowWidth;
     int windowHeight;
-    SDL_Window* window = Renderer::m_window;
+    SDL_Window *window = Renderer::m_window;
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(m_font, text.c_str(), color);
-    SDL_Texture* Message = SDL_CreateTextureFromSurface(Renderer::m_renderer, surfaceMessage);
+    SDL_Surface *surfaceMessage = TTF_RenderText_Solid(m_font, text.c_str(), color);
+    SDL_Texture *Message = SDL_CreateTextureFromSurface(Renderer::m_renderer, surfaceMessage);
 
     int textWidth = surfaceMessage->w;
     int textHeight = surfaceMessage->h;
@@ -190,39 +190,39 @@ SDL_Rect Renderer::drawText(const std::string& text, alignment alignment, SDL_Co
     switch (alignment)
     {
 
-        case TOP_LEFT:
-            break;
-        case TOP_MIDDLE:
-            x = windowWidth/2 - textWidth/2 + x;
-            break;
-        case TOP_RIGHT:
-            x = windowWidth - textWidth - x;
-            break;
-        case MIDDLE_LEFT:
-            y = windowHeight/2 - textHeight/2 - y;
-            break;
-        case MIDDLE_MIDDLE:
-            y = windowHeight/2 - textHeight/2 - y;
-            x = windowWidth/2 - textWidth/2 + x;
-            break;
-        case MIDDLE_RIGHT:
-            y = windowHeight/2 - textHeight/2 - y;
-            x = windowWidth - textWidth - x;
-            break;
-        case BOTTOM_LEFT:
-            y = windowHeight - textHeight - y;
-            break;
-        case BOTTOM_MIDDLE:
-            y = windowHeight - textHeight - y;
-            x = windowWidth/2 - textWidth/2 + x;
-            break;
-        case BOTTOM_RIGHT:
-            y = windowHeight - textHeight - y;
-            x = windowWidth - textWidth - x;
-            break;
+    case TOP_LEFT:
+        break;
+    case TOP_MIDDLE:
+        x = windowWidth / 2 - textWidth / 2 + x;
+        break;
+    case TOP_RIGHT:
+        x = windowWidth - textWidth - x;
+        break;
+    case MIDDLE_LEFT:
+        y = windowHeight / 2 - textHeight / 2 - y;
+        break;
+    case MIDDLE_MIDDLE:
+        y = windowHeight / 2 - textHeight / 2 - y;
+        x = windowWidth / 2 - textWidth / 2 + x;
+        break;
+    case MIDDLE_RIGHT:
+        y = windowHeight / 2 - textHeight / 2 - y;
+        x = windowWidth - textWidth - x;
+        break;
+    case BOTTOM_LEFT:
+        y = windowHeight - textHeight - y;
+        break;
+    case BOTTOM_MIDDLE:
+        y = windowHeight - textHeight - y;
+        x = windowWidth / 2 - textWidth / 2 + x;
+        break;
+    case BOTTOM_RIGHT:
+        y = windowHeight - textHeight - y;
+        x = windowWidth - textWidth - x;
+        break;
     }
 
-    SDL_Rect MessageRect = {x, y, textWidth,textHeight};
+    SDL_Rect MessageRect = {x, y, textWidth, textHeight};
     SDL_RenderCopy(Renderer::m_renderer, Message, nullptr, &MessageRect);
     SDL_DestroyTexture(Message);
     SDL_FreeSurface(surfaceMessage);
@@ -231,23 +231,23 @@ SDL_Rect Renderer::drawText(const std::string& text, alignment alignment, SDL_Co
 
 void Renderer::drawCrown(float x, float y, float width, float height)
 {
-    Renderer::drawTriangle(x, y,width, height, UP, YELLOW);
-    Renderer::drawTriangle(x + width / 2, y,width, height, UP, YELLOW);
-    Renderer::drawTriangle(x + width, y,width, height, UP, YELLOW);
+    Renderer::drawTriangle(x, y, width, height, UP, YELLOW);
+    Renderer::drawTriangle(x + width / 2, y, width, height, UP, YELLOW);
+    Renderer::drawTriangle(x + width, y, width, height, UP, YELLOW);
 
     SDL_SetRenderDrawColor(Renderer::m_renderer, RED.r, RED.g, RED.b, RED.a);
-    Renderer::drawCircle(Renderer::m_renderer, 640, 510, 10);
-    Renderer::drawCircle(Renderer::m_renderer, 780, 510, 10);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 70, static_cast<int>(y) + 110, 10);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 140, static_cast<int>(y) + 110, 10);
     SDL_SetRenderDrawColor(Renderer::m_renderer, BLUE.r, BLUE.g, BLUE.b, BLUE.a);
-    Renderer::drawCircle(Renderer::m_renderer, 710, 510, 10);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 210, static_cast<int>(y) + 110, 10);
 
     SDL_SetRenderDrawColor(Renderer::m_renderer, YELLOW.r, YELLOW.g, YELLOW.b, YELLOW.a);
-    Renderer::drawCircle(Renderer::m_renderer, 640, 390, 20);
-    Renderer::drawCircle(Renderer::m_renderer, 710, 390, 20);
-    Renderer::drawCircle(Renderer::m_renderer, 780, 390, 20);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 70, static_cast<int>(y) - 10, 20);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 140, static_cast<int>(y) - 10, 20);
+    Renderer::drawCircle(Renderer::m_renderer, static_cast<int>(x) + 210, static_cast<int>(y) - 10, 20);
 }
 
-void Renderer::drawCircle(SDL_Renderer * renderer, int x, int y, int radius)
+void Renderer::drawCircle(SDL_Renderer *renderer, int x, int y, int radius)
 {
     int offsetX;
     int offsetY;
@@ -256,12 +256,12 @@ void Renderer::drawCircle(SDL_Renderer * renderer, int x, int y, int radius)
 
     offsetX = 0;
     offsetY = radius;
-    d = radius -1;
+    d = radius - 1;
     status = 0;
 
     while (offsetY >= offsetX)
     {
-        //drawing lines that add up to a circle
+        // drawing lines that add up to a circle
         status += SDL_RenderDrawLine(renderer, x - offsetY, y + offsetX, x + offsetY, y + offsetX);
         status += SDL_RenderDrawLine(renderer, x - offsetX, y + offsetY, x + offsetX, y + offsetY);
         status += SDL_RenderDrawLine(renderer, x - offsetX, y - offsetY, x + offsetX, y - offsetY);
@@ -290,4 +290,3 @@ void Renderer::drawCircle(SDL_Renderer * renderer, int x, int y, int radius)
         }
     }
 }
-

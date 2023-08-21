@@ -9,6 +9,7 @@ set(
         FileHandler.cpp
         Game.cpp
         UserInterface.cpp
+        Difficulty.cpp
 )
 
 set(
@@ -22,6 +23,15 @@ set(
         FileHandler.hpp
         Game.hpp
         UserInterface.hpp
+        Difficulty.hpp
+)
+
+set(
+        assets
+        data/data_file.txt
+        data/empty_file.txt
+        data/file_setsGridSizeTo_7.txt
+        data/OpenSans.ttf
 )
 
 add_library(Code)
@@ -30,6 +40,8 @@ target_link_libraries(Code PRIVATE SDL2::SDL2main SDL2::SDL2 SDL2_ttf::SDL2_ttf-
 
 add_executable(FinaleProject main.cpp)
 target_link_libraries(FinaleProject PRIVATE SDL2::SDL2-static SDL2::SDL2main SDL2_ttf::SDL2_ttf-static PUBLIC Code)
+
+file(COPY ${assets} DESTINATION ${CMAKE_BINARY_DIR}/src)
 
 if ((WIN32 OR WIN64) AND NOT MSVC)
     add_custom_command(

@@ -11,7 +11,7 @@
 Blocks *newBlock(std::vector<int> vecBlockCoordinate, int startIndex);
 std::vector<int> splitStreamIntoVec(std::string line);
 
-std::vector<Grid *> FileHandler::readFile(const std::string& filePath)
+std::vector<Grid *> FileHandler::readFile(const std::string &filePath)
 {
     int gridSize;
     std::ifstream input_stream(filePath);
