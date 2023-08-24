@@ -7,6 +7,10 @@ set(CMAKE_C_STANDARD 17)
 
 include(FetchContent)
 
+if (${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.24)
+    cmake_policy(SET CMP0135 NEW)
+endif ()
+
 option(BUILD_SHARED_LIBS "" OFF)
 option(BUILD_SAMPLES "" OFF)
 option(SDL2MIXER_SAMPLES "" OFF)
@@ -26,9 +30,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SDL2)
 
 FetchContent_Declare(
-        SDL2_ttf
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
-        GIT_TAG release-2.20.2
+    SDL2_ttf
+    URL https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.20.2/SDL2_ttf-2.20.2.zip
 )
 FetchContent_MakeAvailable(SDL2_ttf)
 
